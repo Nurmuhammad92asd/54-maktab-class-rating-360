@@ -3,74 +3,169 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>54-MAKTAB | Xodim kabineti</title>
+<title>54-MAKTAB | Baholash kabineti</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#f1f4fa;font-family:Arial;color:#17233c}
-header{background:#14294c;color:white;text-align:center;padding:22px}
-main{max-width:720px;margin:25px auto;padding:15px}
-.card{background:white;padding:22px;border-radius:15px;margin-bottom:18px;box-shadow:0 3px 14px #0001}
-input,select,textarea,button{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #ccd4e2;font-size:15px;font-family:inherit}
-button{background:#173e70;color:white;border:0;font-weight:bold;cursor:pointer}
-button:disabled{background:#8a9bb8;cursor:not-allowed}
-.hidden{display:none}
-#message{color:#b42318}
-.label{font-weight:bold;margin-top:14px;display:block;font-size:14px;color:#3a4a66}
-.hint{font-size:13px;color:#68758c;margin:4px 0}
-.criterion-block{background:#f8fafd;border:1px solid #e2e8f2;border-radius:10px;padding:14px;margin:12px 0}
-.criterion-name{font-weight:bold;color:#173e70;margin-bottom:4px}
-.criterion-max{font-size:13px;color:#68758c;margin-bottom:10px}
-.score-row{display:flex;gap:10px;align-items:center}
-.score-row input[type=number]{flex:1}
-.existing{background:#fff8e1;border-left:4px solid #f0b429;padding:8px 12px;border-radius:6px;font-size:13px;margin:8px 0}
-.success{background:#e8f5e9;border-left:4px solid #2e7d32;padding:10px 12px;border-radius:6px;color:#1b5e20;font-weight:bold}
-.error{background:#ffebee;border-left:4px solid #c62828;padding:10px 12px;border-radius:6px;color:#b71c1c}
+:root {
+  --primary: #4F46E5;
+  --primary-hover: #4338CA;
+  --bg: #F3F4F6;
+  --card-bg: #FFFFFF;
+  --text: #111827;
+  --text-muted: #6B7280;
+  --border: #E5E7EB;
+  --success: #10B981;
+  --danger: #EF4444;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+header {
+  background: linear-gradient(135deg, #1E1B4B, #4F46E5);
+  color: white;
+  text-align: center;
+  padding: 35px 20px;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  box-shadow: 0 10px 25px rgba(79, 70, 229, 0.2);
+}
+
+header h2 { font-size: 24px; font-weight: 800; margin-bottom: 5px; }
+header p { font-size: 15px; opacity: 0.9; }
+
+main {
+  max-width: 700px;
+  margin: -20px auto 40px;
+  padding: 0 15px;
+  position: relative;
+  z-index: 10;
+}
+
+.card {
+  background: var(--card-bg);
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  border: 1px solid var(--border);
+}
+
+h3 { font-size: 20px; margin-bottom: 20px; color: var(--primary); border-bottom: 2px solid #EEF2FF; padding-bottom: 10px; }
+
+.label { font-weight: 700; margin-top: 15px; display: block; font-size: 14px; color: var(--text); }
+.hint { font-size: 13px; color: var(--text-muted); margin: 5px 0 15px; }
+
+input, select, textarea {
+  width: 100%;
+  padding: 14px;
+  margin: 8px 0;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-size: 15px;
+  font-family: inherit;
+  background: #F9FAFB;
+  transition: all 0.2s;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+button {
+  width: 100%;
+  padding: 16px;
+  margin: 15px 0 5px;
+  border-radius: 10px;
+  border: none;
+  background: var(--primary);
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+button:hover { background: var(--primary-hover); }
+button:active { transform: scale(0.98); }
+button:disabled { background: #9CA3AF; cursor: not-allowed; }
+
+.criterion-block {
+  background: #F8FAFC;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 15px;
+  margin: 15px 0;
+}
+
+.criterion-name { font-weight: 700; color: var(--primary); font-size: 16px; margin-bottom: 5px; }
+.criterion-max { font-size: 13px; color: var(--text-muted); margin-bottom: 10px; font-weight: 600;}
+
+.existing {
+  background: #FEF3C7;
+  border-left: 4px solid #F59E0B;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin: 10px 0;
+  color: #92400E;
+}
+
+.success { background: #D1FAE5; border-left: 4px solid var(--success); padding: 12px; border-radius: 8px; color: #065F46; font-weight: 700; margin-top: 15px;}
+.error { background: #FEE2E2; border-left: 4px solid var(--danger); padding: 12px; border-radius: 8px; color: #991B1B; font-weight: 700; margin-top: 15px;}
+
+.hidden { display: none !important; }
+
+.logout-btn { background: #F3F4F6; color: #4B5563; border: 1px solid #D1D5DB; margin-top: 20px;}
+.logout-btn:hover { background: #E5E7EB; }
+
+#message { color: var(--danger); margin-top: 15px; font-weight: 600; text-align: center; }
 </style>
 </head>
 <body>
+
 <header>
-<h2>🏆 54-MAKTAB CLASS RATING 360</h2>
-<p>XODIMLAR KABINETI</p>
+  <h2>🏆 54-MAKTAB CLASS RATING</h2>
+  <p>Baholash va monitoring kabineti</p>
 </header>
+
 <main>
+  <!-- Xush kelibsiz qismi -->
+  <div class="card hidden" id="dashboard">
+    <h3>Xush kelibsiz, <span id="staffName" style="color:var(--text)">...</span>!</h3>
 
-<!-- LOGIN -->
-<div class="card" id="loginBox">
-<h3>Tizimga kirish</h3>
-<input id="email" type="email" placeholder="Email manzilingiz">
-<input id="password" type="password" placeholder="Parolingiz">
-<button id="loginBtn">Kirish</button>
-<p id="message"></p>
-</div>
+    <label class="label">1. Sinfni tanlang</label>
+    <select id="classSelect"><option value="">— Yuklanmoqda... —</option></select>
 
-<!-- DASHBOARD -->
-<div class="card hidden" id="dashboard">
-<h3>Xush kelibsiz, <span id="staffName">...</span>!</h3>
+    <label class="label">2. Haftani tanlang</label>
+    <select id="weekSelect"><option value="">— Yuklanmoqda... —</option></select>
 
-<label class="label">1. Sinfni tanlang</label>
-<select id="classSelect"><option value="">— Yuklanmoqda... —</option></select>
+    <label class="label" style="margin-top: 25px;">3. Baholash</label>
+    <div class="hint">Har bir mezon uchun 0 dan maksimal ballgacha qiymat kiriting.</div>
+    
+    <div id="criteriaArea">
+      <p class="hint" style="text-align:center; padding: 20px 0;">Sinf va haftani tanlang...</p>
+    </div>
 
-<label class="label">2. Haftani tanlang</label>
-<select id="weekSelect"><option value="">— Yuklanmoqda... —</option></select>
+    <button id="saveBtn" disabled>Ma'lumotlarni saqlash</button>
+    <div id="resultMsg"></div>
 
-<label class="label">3. Baholash</label>
-<div class="hint">Har bir mezon uchun 0 dan maksimal ballgacha qiymat kiriting.</div>
-<div id="criteriaArea"><p class="hint">Sinf va haftani tanlang...</p></div>
-
-<button id="saveBtn" disabled>Saqlash</button>
-<div id="resultMsg"></div>
-
-<button id="logoutBtn" style="background:#8a9bb8;margin-top:14px">Chiqish</button>
-</div>
-
+    <button id="logoutBtn" class="logout-btn">Tizimdan chiqish</button>
+  </div>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./supabase-config.js"></script>
 <script>
-const loginBox   = document.getElementById("loginBox");
 const dashboard  = document.getElementById("dashboard");
-const message    = document.getElementById("message");
 const classSelect= document.getElementById("classSelect");
 const weekSelect = document.getElementById("weekSelect");
 const criteriaArea = document.getElementById("criteriaArea");
@@ -78,54 +173,38 @@ const saveBtn    = document.getElementById("saveBtn");
 const resultMsg  = document.getElementById("resultMsg");
 
 let currentStaffId = null;
-let myCriteria = [];   // [{id, name, max_score}]
-let myScores = {};     // {criterion_id: score}
+let myCriteria = [];
+let myScores = {};
 
-// ============ LOGIN ============
-document.getElementById("loginBtn").onclick = async () => {
-  message.textContent = "Tekshirilmoqda...";
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-  const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-  if (error) { message.textContent = "Email yoki parol xato."; return; }
-  message.textContent = "";
-  await initDashboard(data.user);
-};
-
-document.getElementById("logoutBtn").onclick = async () => {
-  await supabaseClient.auth.signOut();
-  location.reload();
-};
-
-// ============ SESSION ============
+// ============ SESSION TEKSHIRISH ============
 async function checkSession() {
   const { data: { session } } = await supabaseClient.auth.getSession();
-  if (session) await initDashboard(session.user);
-}
-
-// ============ DASHBOARD INIT ============
-async function initDashboard(user) {
-  // 1. Staff ma'lumot
-  const { data: staff, error: staffErr } = await supabaseClient
-    .from("staff").select("full_name, role").eq("id", user.id).maybeSingle();
-
-  if (staffErr || !staff) {
-    await supabaseClient.auth.signOut();
-    message.textContent = "Xodim ma'lumotlari topilmadi.";
+  if (!session) {
+    // Agar sessiya bo'lmasa, login sahifasiga qaytarish
+    window.location.href = "login.html"; 
     return;
   }
-  if (staff.role === "admin") {
+  await initDashboard(session.user);
+}
+
+// ============ DASHBOARD YUKLASH ============
+async function initDashboard(user) {
+  // 1. Xodim ma'lumotlarini olish
+  const { data: staff, error: staffErr } = await supabaseClient
+    .from("staff").select("full_name").eq("id", user.id).maybeSingle();
+
+  if (staffErr || !staff) {
+    alert("Xodim ma'lumotlari topilmadi. Qaytadan kiring.");
     await supabaseClient.auth.signOut();
-    message.textContent = "Admin hisobidan admin panelga kiring.";
+    window.location.href = "login.html";
     return;
   }
 
   currentStaffId = user.id;
   document.getElementById("staffName").textContent = staff.full_name;
-  loginBox.classList.add("hidden");
   dashboard.classList.remove("hidden");
 
-  // 2. Mening mezonlarim (staff_criteria orqali)
+  // 2. Xodimning mezonlarini olish
   const { data: sc, error: scErr } = await supabaseClient
     .from("staff_criteria")
     .select("criterion_id, criteria(id, name, max_score)")
@@ -138,29 +217,27 @@ async function initDashboard(user) {
   myCriteria = (sc || []).map(x => x.criteria).filter(Boolean);
 
   if (myCriteria.length === 0) {
-    criteriaArea.innerHTML = `<div class="error">Sizga hali mezon biriktirilmagan. Admin bilan bog'laning.</div>`;
+    criteriaArea.innerHTML = `<div class="error">Sizga hali baholash mezoni biriktirilmagan. Admin bilan bog'laning.</div>`;
     saveBtn.disabled = true;
     return;
   }
 
   // 3. Sinflarni yuklash
-  const { data: classes, error: clErr } = await supabaseClient
-    .from("classes").select("id, name, level").order("name");
-  if (clErr) { criteriaArea.innerHTML = `<div class="error">Sinflar xatosi: ${clErr.message}</div>`; return; }
+  const { data: classes } = await supabaseClient
+    .from("classes").select("id, name").order("name");
 
   classSelect.innerHTML = '<option value="">— Sinfni tanlang —</option>' +
     (classes || []).map(c => `<option value="${c.id}">${c.name}</option>`).join("");
 
-  // 4. Haftalarni yuklash (faqat open)
-  const { data: weeks, error: wErr } = await supabaseClient
+  // 4. Faol haftalarni yuklash
+  const { data: weeks } = await supabaseClient
     .from("weeks").select("id, title, start_date, end_date")
     .eq("status", "open").order("start_date");
-  if (wErr) { criteriaArea.innerHTML = `<div class="error">Haftalar xatosi: ${wErr.message}</div>`; return; }
 
   weekSelect.innerHTML = '<option value="">— Haftani tanlang —</option>' +
     (weeks || []).map(w => `<option value="${w.id}">${w.title} (${w.start_date} — ${w.end_date})</option>`).join("");
 
-  // 5. Tanlash o'zgarganda formani yangilash
+  // Hodisalarni biriktirish
   classSelect.onchange = loadEvaluationForm;
   weekSelect.onchange  = loadEvaluationForm;
   saveBtn.onclick = saveEvaluations;
@@ -173,12 +250,14 @@ async function loadEvaluationForm() {
   const weekId  = weekSelect.value;
 
   if (!classId || !weekId) {
-    criteriaArea.innerHTML = `<p class="hint">Sinf va haftani tanlang...</p>`;
+    criteriaArea.innerHTML = `<p class="hint" style="text-align:center; padding:20px;">Sinf va haftani tanlang...</p>`;
     saveBtn.disabled = true;
     return;
   }
 
-  // Mavjud baholarni tekshirish (shu staff + class + week)
+  criteriaArea.innerHTML = `<p class="hint" style="text-align:center; padding:20px;">Yuklanmoqda...</p>`;
+
+  // Mavjud baholarni olish
   const { data: existing, error: eErr } = await supabaseClient
     .from("evaluations")
     .select("criterion_id, score, comment")
@@ -197,7 +276,7 @@ async function loadEvaluationForm() {
     myScores[e.criterion_id] = { score: e.score, comment: e.comment || "" };
   });
 
-  // Formani ko'rsatish
+  // Formani chizish
   criteriaArea.innerHTML = myCriteria.map(c => {
     const ex = myScores[c.id];
     const val = ex ? ex.score : "";
@@ -206,12 +285,10 @@ async function loadEvaluationForm() {
       <div class="criterion-block">
         <div class="criterion-name">${c.name}</div>
         <div class="criterion-max">Maksimal: ${c.max_score} ball</div>
-        ${ex ? `<div class="existing">Oldin kiritilgan: <b>${ex.score}</b> ball${ex.comment ? ' — izoh: '+ex.comment : ''}. Yangilashingiz mumkin.</div>` : ""}
-        <div class="score-row">
-          <input type="number" min="0" max="${c.max_score}" step="0.5"
-                 id="score_${c.id}" value="${val}" placeholder="0 — ${c.max_score}">
-        </div>
-        <input type="text" id="comment_${c.id}" value="${cmt.replace(/"/g,'&quot;')}" placeholder="Izoh (ixtiyoriy)">
+        ${ex ? `<div class="existing">Oldin kiritilgan: <b>${ex.score}</b> ball${ex.comment ? ' (Izoh: '+ex.comment+')' : ''}</div>` : ""}
+        <input type="number" min="0" max="${c.max_score}" step="0.5"
+               id="score_${c.id}" value="${val}" placeholder="0 dan ${c.max_score} gacha">
+        <input type="text" id="comment_${c.id}" value="${cmt.replace(/"/g,'&quot;')}" placeholder="Izoh yozish (ixtiyoriy)">
       </div>
     `;
   }).join("");
@@ -226,21 +303,21 @@ async function saveEvaluations() {
   if (!classId || !weekId) return;
 
   resultMsg.innerHTML = "";
-
-  // Har bir mezon uchun qiymatni tekshirish
   const rows = [];
+
   for (const c of myCriteria) {
     const input = document.getElementById("score_" + c.id);
     const comment = document.getElementById("comment_" + c.id);
     const raw = input.value.trim();
 
-    if (raw === "") continue; // bo'sh qoldirilgan bo'lsa — o'tkazib yuboramiz
+    if (raw === "") continue; 
 
     const val = parseFloat(raw);
     if (isNaN(val) || val < 0 || val > c.max_score) {
-      resultMsg.innerHTML = `<div class="error">"${c.name}" uchun noto'g'ri ball: 0 — ${c.max_score} orasida bo'lishi kerak.</div>`;
+      resultMsg.innerHTML = `<div class="error">"${c.name}" uchun noto'g'ri ball kiritildi. 0 va ${c.max_score} orasida bo'lishi kerak.</div>`;
       return;
     }
+    
     rows.push({
       class_id:     parseInt(classId),
       week_id:      parseInt(weekId),
@@ -252,31 +329,34 @@ async function saveEvaluations() {
   }
 
   if (rows.length === 0) {
-    resultMsg.innerHTML = `<div class="error">Hech qanday ball kiritilmadi.</div>`;
+    resultMsg.innerHTML = `<div class="error">Saqlash uchun hech qanday ball kiritilmadi.</div>`;
     return;
   }
 
   saveBtn.disabled = true;
   saveBtn.textContent = "Saqlanmoqda...";
 
-  // Upsert: agar mavjud bo'lsa yangilaydi, bo'lmasa qo'shadi
-  // Buning uchun evaluations jadvalida UNIQUE (class_id, week_id, criterion_id, staff_id) bo'lishi kerak
   const { error } = await supabaseClient
     .from("evaluations")
     .upsert(rows, { onConflict: "class_id,week_id,criterion_id,staff_id" });
 
   saveBtn.disabled = false;
-  saveBtn.textContent = "Saqlash";
+  saveBtn.textContent = "Ma'lumotlarni saqlash";
 
   if (error) {
-    resultMsg.innerHTML = `<div class="error">Saqlashda xato: ${error.message}</div>`;
+    resultMsg.innerHTML = `<div class="error">Xatolik yuz berdi: ${error.message}</div>`;
     return;
   }
 
-  resultMsg.innerHTML = `<div class="success">✅ ${rows.length} ta ball muvaffaqiyatli saqlandi!</div>`;
-  // Formani qayta yuklash (yangi qiymatlarni ko'rsatish uchun)
-  setTimeout(loadEvaluationForm, 800);
+  resultMsg.innerHTML = `<div class="success">✅ Muvaffaqiyatli saqlandi!</div>`;
+  setTimeout(loadEvaluationForm, 1000);
 }
+
+// ============ CHIQISH ============
+document.getElementById("logoutBtn").onclick = async () => {
+  await supabaseClient.auth.signOut();
+  window.location.href = "index.html";
+};
 
 checkSession();
 </script>
