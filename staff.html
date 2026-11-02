@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>54-MAKTAB | Xodim kabineti</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f1f4fa;font-family:Arial;color:#17233c}
+header{background:#14294c;color:white;text-align:center;padding:22px}
+main{max-width:650px;margin:25px auto;padding:15px}
+.card{background:white;padding:22px;border-radius:15px;margin-bottom:18px;box-shadow:0 3px 14px #0001}
+input,button{width:100%;padding:13px;margin:8px 0;border-radius:8px;border:1px solid #ccd4e2;font-size:16px}
+button{background:#173e70;color:white;border:0;font-weight:bold}
+.hidden{display:none}
+#message{color:#b42318}
+</style>
+</head>
+<body>
+<header>
+<h2>🏆 54-MAKTAB CLASS RATING 360</h2>
+<p>XODIMLAR KABINETI</p>
+</header>
+<main>
+<div class="card" id="loginBox">
+<h3>Tizimga kirish</h3>
+<input id="email" type="email" placeholder="Email manzilingiz">
+<input id="password" type="password" placeholder="Parolingiz">
+<button id="loginBtn">Kirish</button>
+<p id="message"></p>
+</div>
+
+<div class="card hidden" id="dashboard">
+<h3>Xush kelibsiz!</h3>
+<p id="staffName"></p>
+<h3>Sizning baholaş mezoningiz</h3>
+<div id="criterion"></div>
+<button id="logoutBtn">Chiqish</button>
+</div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabase-config.js"></script>
+<script>
+const loginBox=document.getElementById("loginBox");
+const dashboard=document.getElementById("dashboard");
+const message=document.getElementById("message");
+
+async function loadStaff(user){
+ const {data,error}=await supabaseClient
+  .from("staff")
+  .select("full_name,role,criteria(name,max_score)")
+  .eq("id",user.id)
+  .maybeSingle();
+
+ if(error || !data){
+  await supabaseClient.auth.signOut();
+  message.textContent="Xodim ma'lumotlari topilmadi.";
+  return;
+ }
+
+ if(data.role==="admin"){
+  await supabaseClient.auth.signOut();
+  message.textContent="Admin hisobidan admin panelga kiring.";
+  return;
+ }
+
+ loginBox.classList.add("hidden");
+ dashboard.classList.remove("hidden");
+ document.getElementById("staffName").textContent=
+  "Xodim: "+data.full_name;
+
+ const c=data.criteria;
+ document.getElementById("criterion").textContent=
+  c ? c.name+" — maksimal "+c.max_score+" ball"
+    : "Mezon biriktirilmagan";
+}
+
+document.getElementById("loginBtn").onclick=async()=>{
+ message.textContent="Tekshirilmoqda...";
+ const email=document.getElementById("email").value.trim();
+ const password=document.getElementById("password").value;
+ const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+ if(error){message.textContent="Email yoki parol xato.";return;}
+ await loadStaff(data.user);
+};
+
+document.getElementById("logoutBtn").onclick=async()=>{
+ await supabaseClient.auth.signOut();
+ location.reload();
+};
+
+async function checkSession(){
+ const {data:{session}}=await supabaseClient.auth.getSession();
+ if(session) await loadStaff(session.user);
+}
+checkSession();
+</script>
+</body>
+</html>
