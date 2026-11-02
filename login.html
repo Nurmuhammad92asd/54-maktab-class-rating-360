@@ -16,7 +16,7 @@
   button { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; }
   button:hover { background: #1D4ED8; }
   #msg { color: #EF4444; margin-top: 15px; font-size: 14px; }
-  a { display: block; margin-top: 20px; color: var(--primary); text-decoration: none; font-size: 14px; }
+  a { display: block; margin-top: 20px; color: var(--primary); text-decoration: none; font-size: 14px; font-weight: 600;}
 </style>
 </head>
 <body>
@@ -39,34 +39,29 @@ document.getElementById("loginBtn").onclick = async () => {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
   
+  // 1. Tizimga kirish
   const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
   
   if (error) { msg.textContent = "Email yoki parol xato!"; return; }
   
-  // Foydalanuvchi kimligini aniqlash
   const userId = data.user.id;
   
-  // 1. Admin yoki Xodimligini tekshirish
+  // 2. Foydalanuvchi qaysi rolga tegishli ekanligini aniqlash
   const { data: staff } = await supabaseClient.from("staff").select("role").eq("id", userId).maybeSingle();
   
-  if (staff?.role === "admin") {
-    window.location.href = "admin.html";
-  } 
-  else if (staff) {
-    // 2. Sinf rahbari yoki yo'qligini tekshirish
-    const { data: teacher } = await supabaseClient.from("class_teachers").select("id").eq("staff_id", userId).maybeSingle();
-    
-    if (teacher) {
-      // Sinf rahbari kabinetiga
-      window.location.href = "class_teacher.html";
-    } else {
-      // Oddiy xodim kabinetiga
-      window.location.href = "staff.html";
-    }
-  } 
-  else {
+  if (!staff) {
     msg.textContent = "Sizning hisobingiz tizimda topilmadi.";
     await supabaseClient.auth.signOut();
+    return;
+  }
+
+  // 3. Rolga qarab yo'naltirish
+  if (staff.role === "admin") {
+    // Admin panelga (u yerdan hamma narsani boshqaradi)
+    window.location.href = "admin.html";
+  } else {
+    // Qolgan barcha xodimlar (hakamlar) staff.html ga o'tadi
+    window.location.href = "staff.html";
   }
 };
 </script>
