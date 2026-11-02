@@ -137,7 +137,6 @@ main { max-width: 1000px; margin: -25px auto 40px; padding: 0 15px; position: re
 .judge-info p { font-size: 12px; margin: 0; color: var(--text-muted); }
 .judge-click-hint { font-size: 11px; color: var(--primary); font-weight: 700; margin-top: 3px; display: block; }
 
-/* Sinf rahbarlari dizayni */
 .teachers-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -477,7 +476,7 @@ async function init() {
       return;
     }
     
-    // 1. Sinf rahbarlarini chizish (Supabase'siz, to'g'ridan-to'g'ri)
+    // 1. Sinf rahbarlarini chizish (Darhol)
     renderTeachers();
 
     // 2. Supabase'dan ma'lumotlarni yuklash
@@ -575,6 +574,34 @@ function renderJudges(scData, staffList, criteria) {
   }).join("");
 }
 
+// Sinf nomi bosilganda ishlaydigan yangi funksiya
+window.showClassTeacher = function(className) {
+  const cleanClassName = className.replace(/[\s-]/g, '').toUpperCase();
+  
+  const teacher = classTeachers.find(t => {
+    const cleanTeacherClass = t.class.replace(/[\s-]/g, '').toUpperCase();
+    return cleanTeacherClass === cleanClassName;
+  });
+
+  if (teacher) {
+    modalTitle.textContent = className + " sinfi rahbari";
+    modalBody.innerHTML = `
+      <div style="text-align:center; padding: 20px 0;">
+        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary), #818CF8); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 800; margin: 0 auto 15px;">
+          ${teacher.name.charAt(0).toUpperCase()}
+        </div>
+        <h2 style="font-size: 22px; margin-bottom: 5px; color: var(--text);">${teacher.name}</h2>
+        <p style="color: var(--primary); font-weight: 700; font-size: 16px; background: var(--primary-light); display: inline-block; padding: 5px 15px; border-radius: 20px;">${teacher.class} sinf rahbari</p>
+      </div>
+    `;
+    modal.classList.add("active");
+  } else {
+    modalTitle.textContent = className + " sinfi rahbari";
+    modalBody.innerHTML = `<p style="text-align:center; padding: 20px 0; color: var(--danger);">Bu sinf uchun rahbar ma'lumotlari kiritilmagan.</p>`;
+    modal.classList.add("active");
+  }
+};
+
 window.openCriteriaModal = function(critName, maxScore) {
   modalTitle.textContent = critName + " (" + maxScore + " ball)";
   const info = criteriaInfo[critName] || "<p>Bu mezon haqida ma'lumot kiritilmagan.</p>";
@@ -637,7 +664,7 @@ function draw(sorted, level, podiumId, listId) {
       <div style="text-align:center;padding:20px;">
         <div style="font-weight:700;margin-bottom:12px;">⏳ G'oliblar aniqlanmoqda</div>
         <div class="badge-list">
-          ${filtered.map(f => `<div class="badge">🏅 ${f.info.name}</div>`).join("")}
+          ${filtered.map(f => `<div class="badge" style="cursor:pointer;" onclick="showClassTeacher('${f.info.name}')">🏅 ${f.info.name}</div>`).join("")}
         </div>
       </div>`;
     list.innerHTML = "";
@@ -648,7 +675,11 @@ function draw(sorted, level, podiumId, listId) {
   const rest = filtered.slice(top3.length);
 
   const block = (item, cls, medal, rank) => item
-    ? `<div class="p-item p-${rank}"><div class="p-name">${item.info.name}</div><div class="p-score">${item.cur} ball</div><div class="p-block">${medal}</div></div>`
+    ? `<div class="p-item p-${rank}" style="cursor:pointer;" onclick="showClassTeacher('${item.info.name}')">
+         <div class="p-name" style="text-decoration: underline; text-decoration-color: transparent; transition: 0.2s;" onmouseover="this.style.textDecorationColor='var(--primary)'" onmouseout="this.style.textDecorationColor='transparent'">${item.info.name}</div>
+         <div class="p-score">${item.cur} ball</div>
+         <div class="p-block">${medal}</div>
+       </div>`
     : "";
 
   podium.innerHTML =
@@ -658,7 +689,11 @@ function draw(sorted, level, podiumId, listId) {
 
   list.innerHTML = rest.map((item, i) => {
     const rank = i + top3.length + 1;
-    return `<div class="row"><div class="rank">${rank}</div><div class="name">${item.info.name}</div><div class="score">${item.cur} ball</div></div>`;
+    return `<div class="row" style="cursor:pointer;" onclick="showClassTeacher('${item.info.name}')">
+              <div class="rank">${rank}</div>
+              <div class="name">${item.info.name}</div>
+              <div class="score">${item.cur} ball</div>
+            </div>`;
   }).join("");
 }
 
