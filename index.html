@@ -137,6 +137,48 @@ main { max-width: 1000px; margin: -25px auto 40px; padding: 0 15px; position: re
 .judge-info p { font-size: 12px; margin: 0; color: var(--text-muted); }
 .judge-click-hint { font-size: 11px; color: var(--primary); font-weight: 700; margin-top: 3px; display: block; }
 
+/* Sinf rahbarlari dizayni */
+.teachers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.teacher-card {
+  background: #F9FAFB;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: transform 0.2s, background 0.2s;
+}
+.teacher-card:hover {
+  transform: translateY(-3px);
+  background: var(--primary-light);
+  border-color: #C7D2FE;
+}
+.teacher-class {
+  background: var(--primary);
+  color: white;
+  font-weight: 800;
+  font-size: 15px;
+  width: 45px;
+  height: 45px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+}
+.teacher-name {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.3;
+}
+
 .modal-overlay {
   position: fixed; top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center;
@@ -171,18 +213,16 @@ main { max-width: 1000px; margin: -25px auto 40px; padding: 0 15px; position: re
 .modal-body li { margin-bottom: 8px; }
 .modal-body .score-range { font-weight: 700; color: var(--text); }
 
-/* ================= DAXSHT MUALLIFLIK QISMI ================= */
+/* DAXSHT MUALLIFLIK QISMI */
 .creator-footer {
   margin-top: 40px;
   padding: 40px 20px;
-  background: #0F172A; /* To'q rangli orqa fon */
+  background: #0F172A;
   text-align: center;
   position: relative;
   overflow: hidden;
   border-top: 4px solid #FF4500;
 }
-
-/* Orqa fonda aylanib turuvchi olovrang nur (Glow) */
 .creator-footer::before {
   content: '';
   position: absolute;
@@ -193,12 +233,10 @@ main { max-width: 1000px; margin: -25px auto 40px; padding: 0 15px; position: re
   animation: pulseGlow 4s ease-in-out infinite alternate;
   pointer-events: none;
 }
-
 @keyframes pulseGlow {
   0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
   100% { transform: translate(-50%, -50%) scale(1.5); opacity: 1; }
 }
-
 .creator-text {
   font-size: 15px;
   color: #9CA3AF;
@@ -208,8 +246,6 @@ main { max-width: 1000px; margin: -25px auto 40px; padding: 0 15px; position: re
   max-width: 800px;
   margin: 0 auto;
 }
-
-/* Olovrang tovlanib aylanadigan ism */
 .fire-name {
   display: block;
   margin-top: 15px;
@@ -217,23 +253,18 @@ main { max-width: 1000px; margin: -25px auto 40px; padding: 0 15px; position: re
   font-weight: 900;
   letter-spacing: 2px;
   text-transform: uppercase;
-  /* Olovrang gradient */
   background: linear-gradient(90deg, #FF4500, #FF8C00, #FFD700, #FF8C00, #FF4500);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: fireFlow 3s linear infinite;
-  /* Ism atrofidagi olovrang nur */
   filter: drop-shadow(0 0 10px rgba(255, 69, 0, 0.8)) drop-shadow(0 0 20px rgba(255, 140, 0, 0.5));
 }
-
 @keyframes fireFlow {
   0% { background-position: 0% center; }
   100% { background-position: 200% center; }
 }
-
-/* Kichik bezak chiziq */
 .fire-line {
   width: 80px;
   height: 3px;
@@ -286,9 +317,15 @@ main { max-width: 1000px; margin: -25px auto 40px; padding: 0 15px; position: re
       <div style="text-align:center; margin-top:10px; font-size:12px; color:var(--text-muted);">Batafsil ma'lumot uchun hakam ustiga bosing</div>
     </div>
   </div>
+
+  <!-- Sinf rahbarlari bo'limi -->
+  <div class="section">
+    <h2>👨‍🏫 Sinf rahbarlari</h2>
+    <div id="teachersList" class="teachers-grid"></div>
+  </div>
 </main>
 
-<!-- ================= ENG PASTKI DAXSHT MUALLIFLIK QISMI ================= -->
+<!-- ENG PASTKI DAXSHT MUALLIFLIK QISMI -->
 <div class="creator-footer">
   <div class="creator-text">
     Ushbu sayt Namangan viloyati, To'raqo'rg'on tumani 54-maktab <br>
@@ -315,6 +352,7 @@ main { max-width: 1000px; margin: -25px auto 40px; padding: 0 15px; position: re
 <script src="./supabase-config.js"></script>
 
 <script>
+// ================= MEZONLAR HAQIDA BATAFSIL MA'LUMOT =================
 const criteriaInfo = {
   "Tashabbuskorlik": `
     <p><strong>Nimalarni o'z ichiga oladi?</strong></p>
@@ -395,6 +433,24 @@ const criteriaInfo = {
   `
 };
 
+// ================= SINF RAHBARLARI MA'LUMOTLARI =================
+const classTeachers = [
+  { class: "1 A", name: "Shokirova Munojat" },
+  { class: "1 B", name: "Isomuhamedova Kamola" },
+  { class: "2 A", name: "Mullaboyeva Mo'tabar" },
+  { class: "2 B", name: "Nurmatova Durdona" },
+  { class: "3 A", name: "Nasriddinov Nodir" },
+  { class: "4 A", name: "Bozorova Muhayyo" },
+  { class: "4 B", name: "Turg'unpo'latova Dildora" },
+  { class: "5 B", name: "Raufjonova Nozima" },
+  { class: "5 A", name: "Imomaliyev Nuriddin" },
+  { class: "6", name: "Aslanova Mahliyo" },
+  { class: "7", name: "Azmadjonova Zebiniso" },
+  { class: "8", name: "Ibragimov Oybek" },
+  { class: "9", name: "Sobirova Dildora" },
+  { class: "11", name: "Abdurahmonova Dilfuza" }
+];
+
 const statusBox = document.getElementById("statusBox");
 const errorBox = document.getElementById("errorBox");
 const modal = document.getElementById("infoModal");
@@ -421,6 +477,10 @@ async function init() {
       return;
     }
     
+    // 1. Sinf rahbarlarini chizish (Supabase'siz, to'g'ridan-to'g'ri)
+    renderTeachers();
+
+    // 2. Supabase'dan ma'lumotlarni yuklash
     const clsRes = await supabaseClient.from("classes").select("id, name, level");
     if (clsRes.error) { showError("Sinflar: " + clsRes.error.message); return; }
     allClasses = clsRes.data || [];
@@ -462,6 +522,18 @@ async function init() {
   } catch (err) {
     showError("Xato: " + (err.message || err));
   }
+}
+
+// Sinf rahbarlarini chiqarish
+function renderTeachers() {
+  const el = document.getElementById("teachersList");
+  if (!el) return;
+  el.innerHTML = classTeachers.map(t => `
+    <div class="teacher-card">
+      <div class="teacher-class">${t.class}</div>
+      <div class="teacher-name">${t.name}</div>
+    </div>
+  `).join("");
 }
 
 function renderCriteria(criteria) {
