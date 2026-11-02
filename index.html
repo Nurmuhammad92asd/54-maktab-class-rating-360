@@ -7,8 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --primary: #4F46E5;      /* Binafsha-ko'k (Zamonaviy) */
-  --primary-hover: #4338CA;
+  --primary: #4F46E5;
   --bg: #F3F4F6;
   --card-bg: #FFFFFF;
   --text: #111827;
@@ -137,7 +136,7 @@ main {
   justify-content: center;
   gap: 15px;
   margin-top: 20px;
-  height: 230px;
+  min-height: 230px;
 }
 
 .podium-item {
@@ -295,23 +294,18 @@ main {
 
   <!-- MEZONLAR VA HAKAMLAR (TANISHTIRUV) -->
   <div class="info-grid">
-    
-    <!-- Mezonlar -->
     <div class="info-card">
       <h3>📋 Baholash mezonlari</h3>
       <ul class="criteria-list" id="criteriaList">
         <li>Yuklanmoqda...</li>
       </ul>
     </div>
-
-    <!-- Hakamlar -->
     <div class="info-card">
       <h3>⚖️ Mas'ul hakamlar (Xodimlar)</h3>
       <div class="judge-list" id="judgesList">
         <p style="color:var(--text-muted);">Yuklanmoqda...</p>
       </div>
     </div>
-
   </div>
 </main>
 
@@ -324,7 +318,6 @@ let allWeeks = [];
 let allEvals = [];
 
 async function initData() {
-  // Barcha kerakli ma'lumotlarni parallel yuklaymiz
   const [clsRes, wkRes, evRes, critRes, staffCritRes] = await Promise.all([
     supabaseClient.from("classes").select("*"),
     supabaseClient.from("weeks").select("*").order("start_date", { ascending: false }),
@@ -339,7 +332,6 @@ async function initData() {
   const criteria = critRes.data || [];
   const staffCriteria = staffCritRes.data || [];
 
-  // Haftalarni select'ga yuklash
   const weekSelect = document.getElementById("weekSelect");
   weekSelect.innerHTML = allWeeks.map((w, i) => 
     `<option value="${w.id}" ${i === 0 ? 'selected' : ''}>${w.title} (${w.start_date} - ${w.end_date})</option>`
@@ -347,12 +339,10 @@ async function initData() {
 
   weekSelect.addEventListener("change", () => renderWeek(weekSelect.value));
 
-  // Mezonlarni chiqarish
   document.getElementById("criteriaList").innerHTML = criteria.map(c => 
     `<li>${c.name} <span>${c.max_score} ball</span></li>`
   ).join("");
 
-  // Hakamlarni chiqarish
   const judgesDiv = document.getElementById("judgesList");
   if (staffCriteria.length > 0) {
     judgesDiv.innerHTML = staffCriteria.map(sc => {
@@ -373,7 +363,6 @@ async function initData() {
     judgesDiv.innerHTML = `<p style="color:var(--text-muted);">Hakamlar biriktirilmagan.</p>`;
   }
 
-  // Reytingni chizish
   if (allWeeks.length > 0) {
     renderWeek(allWeeks[0].id);
   }
@@ -403,8 +392,13 @@ function drawPodium(sortedData, level, podiumId, listId) {
   const podiumDiv = document.getElementById(podiumId);
   const listDiv = document.getElementById(listId);
 
+  // Agar ball kiritilmagan bo'lsa chiroyli xabar chiqarish
   if (filtered.length === 0 || filtered[0].current === 0) {
-    podiumDiv.innerHTML = `<p style="color:#9CA3AF; width:100%;">Bu hafta uchun natijalar hali yo'q</p>`;
+    podiumDiv.innerHTML = `
+      <div style="text-align: center; width: 100%; padding: 40px 0; color: #9CA3AF;">
+        <div style="font-size: 40px; margin-bottom: 10px;">📭</div>
+        <p style="font-weight: 600;">Bu hafta uchun natijalar hali kiritilmagan</p>
+      </div>`;
     listDiv.innerHTML = "";
     return;
   }
