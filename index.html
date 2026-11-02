@@ -7,7 +7,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --primary: #4F46E5;
+  --primary: #4F46E5;      /* Binafsha-ko'k */
+  --primary-light: #EEF2FF;
   --bg: #F3F4F6;
   --card-bg: #FFFFFF;
   --text: #111827;
@@ -101,7 +102,7 @@ main {
   font-family: inherit;
   font-weight: 600;
   color: var(--primary);
-  background: #EEF2FF;
+  background: var(--primary-light);
   cursor: pointer;
   outline: none;
   transition: border 0.2s;
@@ -166,7 +167,37 @@ main {
 .podium-2 .podium-block { height: 120px; background: linear-gradient(180deg, #CBD5E1, #94A3B8); }
 .podium-3 .podium-block { height: 90px; background: linear-gradient(180deg, #D97706, #B45309); }
 
-/* Qolgan sinflar */
+/* Agar g'oliblar yo'q bo'lsa (Da'vogarlar) */
+.contenders-box {
+  background: var(--primary-light);
+  border: 2px dashed #A5B4FC;
+  border-radius: 20px;
+  padding: 30px 20px;
+  text-align: center;
+}
+.contenders-box h3 { font-size: 20px; color: var(--primary); margin-bottom: 10px; }
+.contenders-box p { color: var(--text-muted); font-size: 15px; margin-bottom: 20px; }
+.contenders-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+.contender-badge {
+  background: white;
+  color: var(--primary);
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  border: 1px solid #C7D2FE;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Qolgan sinflar ro'yxati */
 .class-row {
   display: flex;
   align-items: center;
@@ -177,7 +208,7 @@ main {
   border: 1px solid var(--border);
   transition: transform 0.2s, background 0.2s;
 }
-.class-row:hover { transform: translateX(5px); background: #EEF2FF; border-color: #C7D2FE; }
+.class-row:hover { transform: translateX(5px); background: var(--primary-light); border-color: #C7D2FE; }
 
 .rank { font-size: 18px; font-weight: 800; color: var(--text-muted); width: 40px; text-align: left; }
 .class-name { flex-grow: 1; font-size: 17px; font-weight: 700; text-align: left;}
@@ -206,7 +237,7 @@ main {
   align-items: center;
   gap: 10px;
   color: var(--primary);
-  border-bottom: 2px solid #EEF2FF;
+  border-bottom: 2px solid var(--primary-light);
   padding-bottom: 10px;
 }
 
@@ -220,7 +251,7 @@ main {
   font-size: 15px;
 }
 .criteria-list li:last-child { border: none; }
-.criteria-list li span { color: var(--primary); background: #EEF2FF; padding: 2px 10px; border-radius: 10px; font-size: 13px; }
+.criteria-list li span { color: var(--primary); background: var(--primary-light); padding: 2px 10px; border-radius: 10px; font-size: 13px; }
 
 .judge-list { display: flex; flex-direction: column; gap: 15px; }
 .judge-item {
@@ -270,7 +301,6 @@ main {
 </header>
 
 <main>
-  <!-- Haftani tanlash -->
   <div class="week-panel">
     <label>📅 Haftalik natijalar:</label>
     <select id="weekSelect">
@@ -278,33 +308,29 @@ main {
     </select>
   </div>
 
-  <!-- BOSHLANG'ICH SINFALAR SHOHSUPASI -->
+  <!-- BOSHLANG'ICH SINFALAR -->
   <div class="podium-section">
-    <div class="section-title">🥇 Boshlang'ich sinflar g'oliblari</div>
+    <div class="section-title">🥇 Boshlang'ich sinflar</div>
     <div id="primaryPodium" class="podium-container"></div>
     <div id="primaryList" style="margin-top: 30px;"></div>
   </div>
 
-  <!-- YUQORI SINFALAR SHOHSUPASI -->
+  <!-- YUQORI SINFALAR -->
   <div class="podium-section">
-    <div class="section-title">🏆 Yuqori sinflar g'oliblari</div>
+    <div class="section-title">🏆 Yuqori sinflar</div>
     <div id="upperPodium" class="podium-container"></div>
     <div id="upperList" style="margin-top: 30px;"></div>
   </div>
 
-  <!-- MEZONLAR VA HAKAMLAR (TANISHTIRUV) -->
+  <!-- MEZONLAR VA HAKAMLAR -->
   <div class="info-grid">
     <div class="info-card">
       <h3>📋 Baholash mezonlari</h3>
-      <ul class="criteria-list" id="criteriaList">
-        <li>Yuklanmoqda...</li>
-      </ul>
+      <ul class="criteria-list" id="criteriaList"><li>Yuklanmoqda...</li></ul>
     </div>
     <div class="info-card">
-      <h3>⚖️ Mas'ul hakamlar (Xodimlar)</h3>
-      <div class="judge-list" id="judgesList">
-        <p style="color:var(--text-muted);">Yuklanmoqda...</p>
-      </div>
+      <h3>⚖️ Mas'ul hakamlar</h3>
+      <div class="judge-list" id="judgesList"><p>Yuklanmoqda...</p></div>
     </div>
   </div>
 </main>
@@ -313,9 +339,7 @@ main {
 <script src="./supabase-config.js"></script>
 
 <script>
-let allClasses = [];
-let allWeeks = [];
-let allEvals = [];
+let allClasses = [], allWeeks = [], allEvals = [];
 
 async function initData() {
   const [clsRes, wkRes, evRes, critRes, staffCritRes] = await Promise.all([
@@ -352,20 +376,13 @@ async function initData() {
       return `
         <div class="judge-item">
           <div class="judge-avatar">${initial}</div>
-          <div class="judge-info">
-            <h4>${name}</h4>
-            <p>${critName}</p>
-          </div>
+          <div class="judge-info"><h4>${name}</h4><p>${critName}</p></div>
         </div>
       `;
     }).join("");
-  } else {
-    judgesDiv.innerHTML = `<p style="color:var(--text-muted);">Hakamlar biriktirilmagan.</p>`;
   }
 
-  if (allWeeks.length > 0) {
-    renderWeek(allWeeks[0].id);
-  }
+  if (allWeeks.length > 0) renderWeek(allWeeks[0].id);
 }
 
 function renderWeek(selectedWeekId) {
@@ -392,17 +409,24 @@ function drawPodium(sortedData, level, podiumId, listId) {
   const podiumDiv = document.getElementById(podiumId);
   const listDiv = document.getElementById(listId);
 
-  // Agar ball kiritilmagan bo'lsa chiroyli xabar chiqarish
+  // 1. Agar umuman ball kiritilmagan bo'lsa (Hafta boshida)
   if (filtered.length === 0 || filtered[0].current === 0) {
+    // Barcha sinflarni da'vogarlar sifatida chiqaramiz
+    let contendersHtml = filtered.map(f => 
+      `<div class="contender-badge">🏅 ${f.info.name}</div>`
+    ).join("");
+
     podiumDiv.innerHTML = `
-      <div style="text-align: center; width: 100%; padding: 40px 0; color: #9CA3AF;">
-        <div style="font-size: 40px; margin-bottom: 10px;">📭</div>
-        <p style="font-weight: 600;">Bu hafta uchun natijalar hali kiritilmagan</p>
+      <div class="contenders-box">
+        <h3>⏳ G'oliblar aniqlanmoqda</h3>
+        <p>Ushbu hafta uchun hali ballar to'liq kiritilmagan. Barcha sinflar g'oliblikka da'vogar:</p>
+        <div class="contenders-list">${contendersHtml}</div>
       </div>`;
     listDiv.innerHTML = "";
     return;
   }
 
+  // 2. Agar ballar kiritilgan bo'lsa (Hafta oxirida)
   let top3 = filtered.filter(f => f.current > 0).slice(0, 3);
   let rest = filtered.slice(top3.length);
 
@@ -437,4 +461,3 @@ initData();
 </script>
 </body>
 </html>
-
