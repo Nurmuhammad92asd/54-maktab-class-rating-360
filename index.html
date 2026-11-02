@@ -113,7 +113,6 @@ main { max-width: 1000px; margin: -25px auto 40px; padding: 0 15px; position: re
   border-bottom: 2px solid var(--primary-light); padding-bottom: 8px;
 }
 
-/* Mezonlar ro'yxati interaktiv */
 .crit-item {
   display: flex; justify-content: space-between; align-items: center; padding: 12px 0;
   border-bottom: 1px dashed var(--border); font-weight: 600; font-size: 14px;
@@ -123,7 +122,6 @@ main { max-width: 1000px; margin: -25px auto 40px; padding: 0 15px; position: re
 .crit-item:last-child { border: none; }
 .crit-item span { color: var(--primary); background: var(--primary-light); padding: 3px 10px; border-radius: 8px; font-size: 12px; }
 
-/* Hakamlar kartochkasi */
 .judge-item {
   display: flex; align-items: center; gap: 12px; background: #F9FAFB;
   padding: 12px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 8px;
@@ -139,7 +137,6 @@ main { max-width: 1000px; margin: -25px auto 40px; padding: 0 15px; position: re
 .judge-info p { font-size: 12px; margin: 0; color: var(--text-muted); }
 .judge-click-hint { font-size: 11px; color: var(--primary); font-weight: 700; margin-top: 3px; display: block; }
 
-/* MODAL OYNA */
 .modal-overlay {
   position: fixed; top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center;
@@ -173,6 +170,79 @@ main { max-width: 1000px; margin: -25px auto 40px; padding: 0 15px; position: re
 .modal-body ul { padding-left: 20px; margin-bottom: 15px; }
 .modal-body li { margin-bottom: 8px; }
 .modal-body .score-range { font-weight: 700; color: var(--text); }
+
+/* ================= DAXSHT MUALLIFLIK QISMI ================= */
+.creator-footer {
+  margin-top: 40px;
+  padding: 40px 20px;
+  background: #0F172A; /* To'q rangli orqa fon */
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-top: 4px solid #FF4500;
+}
+
+/* Orqa fonda aylanib turuvchi olovrang nur (Glow) */
+.creator-footer::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(255,69,0,0.4) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  animation: pulseGlow 4s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes pulseGlow {
+  0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
+  100% { transform: translate(-50%, -50%) scale(1.5); opacity: 1; }
+}
+
+.creator-text {
+  font-size: 15px;
+  color: #9CA3AF;
+  line-height: 1.8;
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Olovrang tovlanib aylanadigan ism */
+.fire-name {
+  display: block;
+  margin-top: 15px;
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  /* Olovrang gradient */
+  background: linear-gradient(90deg, #FF4500, #FF8C00, #FFD700, #FF8C00, #FF4500);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fireFlow 3s linear infinite;
+  /* Ism atrofidagi olovrang nur */
+  filter: drop-shadow(0 0 10px rgba(255, 69, 0, 0.8)) drop-shadow(0 0 20px rgba(255, 140, 0, 0.5));
+}
+
+@keyframes fireFlow {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Kichik bezak chiziq */
+.fire-line {
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #FF4500, transparent);
+  margin: 20px auto 0;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 0 10px #FF4500;
+}
 </style>
 </head>
 <body>
@@ -218,6 +288,18 @@ main { max-width: 1000px; margin: -25px auto 40px; padding: 0 15px; position: re
   </div>
 </main>
 
+<!-- ================= ENG PASTKI DAXSHT MUALLIFLIK QISMI ================= -->
+<div class="creator-footer">
+  <div class="creator-text">
+    Ushbu sayt Namangan viloyati, To'raqo'rg'on tumani 54-maktab <br>
+    o'quv ishlari bo'yicha direktor o'rinbosari tomonidan yaratilgan:
+    
+    <span class="fire-name">N. TALATBEKOV</span>
+    
+    <div class="fire-line"></div>
+  </div>
+</div>
+
 <!-- MODAL OYNA -->
 <div class="modal-overlay" id="infoModal">
   <div class="modal-content">
@@ -233,28 +315,27 @@ main { max-width: 1000px; margin: -25px auto 40px; padding: 0 15px; position: re
 <script src="./supabase-config.js"></script>
 
 <script>
-// ================= MEZONLAR HAQIDA BATAFSIL VA KREATIV MA'LUMOT =================
 const criteriaInfo = {
   "Tashabbuskorlik": `
     <p><strong>Nimalarni o'z ichiga oladi?</strong></p>
     <p>O'quvchining darsda va darsdan tashqari vaqtda o'z fikrini dadil aytishi, savollar berishi, yangi g'oyalar va takliflar kiritishi, guruh ishlarida yetakchilik qilishi.</p>
     <strong>Kreativ baholash qo'llanmasi:</strong>
     <ul>
-      <li><span class="score-range">9-10 ball:</span> "G'oyalar generatori". Darslarda doim faol, mustaqil fikrlaydi, o'qituvchi aytmasdan turib muammolarga yechim taklif qiladi.</li>
-      <li><span class="score-range">6-8 ball:</span> "Faol ishtirokchi". O'rtacha faollik, berilgan topshiriqlarni bajonidil bajaradi, lekin tashabbus ko'proq o'qituvchidan keladi.</li>
-      <li><span class="score-range">3-5 ball:</span> "Kuzatuvchi". Faqat so'ralganda javob beradi, passiv, mustaqil fikr bildirishdan qochadi.</li>
-      <li><span class="score-range">0-2 ball:</span> "Befarq". Darsda umuman qatnashmaydi, topshiriqlarga loqayd.</li>
+      <li><span class="score-range">9-10 ball:</span> "G'oyalar generatori". Darslarda doim faol, mustaqil fikrlaydi, muammolarga yechim taklif qiladi.</li>
+      <li><span class="score-range">6-8 ball:</span> "Faol ishtirokchi". O'rtacha faollik, topshiriqlarni bajaradi.</li>
+      <li><span class="score-range">3-5 ball:</span> "Kuzatuvchi". Faqat so'ralganda javob beradi, passiv.</li>
+      <li><span class="score-range">0-2 ball:</span> "Befarq". Darsda umuman qatnashmaydi.</li>
     </ul>
   `,
   "Maktab tadbirlaridagi faollik": `
     <p><strong>Nimalarni o'z ichiga oladi?</strong></p>
-    <p>Maktab miqyosidagi bayramlar, turli tanlovlar, sport musobaqalari, ko'rik-tanlovlar va ijtimoiy loyihalarda sinfning qatnashishi.</p>
+    <p>Maktab miqyosidagi bayramlar, turli tanlovlar, sport musobaqalari va ijtimoiy loyihalarda sinfning qatnashishi.</p>
     <strong>Kreativ baholash qo'llanmasi:</strong>
     <ul>
-      <li><span class="score-range">9-10 ball:</span> "Sahnaning yulduzi". Barcha maktab tadbirlarida faol qatnashadi, tadbirlarni tashkil qilishda yordam beradi, sovrinli o'rinlarni egallaydi.</li>
-      <li><span class="score-range">6-8 ball:</span> "Faol ishtirokchi". Ko'pchilik tadbirlarda qatnashadi, lekin tashkilotchilikda faol emas.</li>
-      <li><span class="score-range">3-5 ball:</span> "Tomoshabin". Ba'zi tadbirlarda qatnashadi (masalan, faqat majburiy tadbirlarda).</li>
-      <li><span class="score-range">0-2 ball:</span> "Chetda qolgan". Tadbirlarga umuman qatnashmaydi.</li>
+      <li><span class="score-range">9-10 ball:</span> "Sahnaning yulduzi". Barcha tadbirlarda faol, tashkil qilishda yordam beradi.</li>
+      <li><span class="score-range">6-8 ball:</span> "Faol ishtirokchi". Ko'pchilik tadbirlarda qatnashadi.</li>
+      <li><span class="score-range">3-5 ball:</span> "Tomoshabin". Ba'zi tadbirlarda qatnashadi.</li>
+      <li><span class="score-range">0-2 ball:</span> "Chetda qolgan". Tadbirlarga qatnashmaydi.</li>
     </ul>
   `,
   "Oquv natijalari": `
@@ -262,54 +343,54 @@ const criteriaInfo = {
     <p>Sinfning choraklik baholari, nazorat ishlari natijalari, olimpiadalardagi ishtiroki va o'zlashtirish darajasi.</p>
     <strong>Kreativ baholash qo'llanmasi:</strong>
     <ul>
-      <li><span class="score-range">22-25 ball:</span> "Bilimlar cho'qqisi". Sinfda o'zlashtirish darajasi eng yuqori (masalan, 90-100%), barcha o'quvchilar bahosi yaxshi.</li>
-      <li><span class="score-range">16-21 ball:</span> "Yaxshi natija". Yaxshi o'zlashtirish, faqat bir nechta o'quvchilarda past baholar bor.</li>
-      <li><span class="score-range">8-15 ball:</span> "O'rtacha daraja". O'rtacha o'zlashtirish, past baholovchilar soni ko'p.</li>
-      <li><span class="score-range">0-7 ball:</span> "Yordamga muhtoj". O'zlashtirish juda past, ko'pchilik o'quvchilar yaxshi baho olmaydi.</li>
+      <li><span class="score-range">22-25 ball:</span> "Bilimlar cho'qqisi". O'zlashtirish darajasi eng yuqori (90-100%).</li>
+      <li><span class="score-range">16-21 ball:</span> "Yaxshi natija". Yaxshi o'zlashtirish.</li>
+      <li><span class="score-range">8-15 ball:</span> "O'rtacha daraja". Past baholovchilar soni ko'p.</li>
+      <li><span class="score-range">0-7 ball:</span> "Yordamga muhtoj". O'zlashtirish juda past.</li>
     </ul>
   `,
   "Davomat": `
     <p><strong>Nimalarni o'z ichiga oladi?</strong></p>
-    <p>Darslarga qatnashish, sababsiz dars qoldirmaslik, darsga o'z vaqtida kelish (kechikmaslik).</p>
+    <p>Darslarga qatnashish, sababsiz dars qoldirmaslik, darsga o'z vaqtida kelish.</p>
     <strong>Kreativ baholash qo'llanmasi:</strong>
     <ul>
-      <li><span class="score-range">18-20 ball:</span> "Soat mexanizmi". Hafta davomida bitta ham sababsiz dars qoldirilmagan, kechikishlar yo'q.</li>
-      <li><span class="score-range">13-17 ball:</span> "Barqaror". 1-2 ta sababsiz dars qoldirilgan yoki kichik kechikishlar bor.</li>
+      <li><span class="score-range">18-20 ball:</span> "Soat mexanizmi". Bitta ham sababsiz dars qoldirilmagan.</li>
+      <li><span class="score-range">13-17 ball:</span> "Barqaror". 1-2 ta sababsiz dars qoldirilgan.</li>
       <li><span class="score-range">7-12 ball:</span> "O'zgaruvchan". 3-5 ta sababsiz dars qoldirilgan.</li>
-      <li><span class="score-range">0-6 ball:</span> "Xavotirli". Ko'plab dars qoldirishlar, davomat juda past.</li>
+      <li><span class="score-range">0-6 ball:</span> "Xavotirli". Ko'plab dars qoldirishlar.</li>
     </ul>
   `,
   "Tozalik va tartib": `
     <p><strong>Nimalarni o'z ichiga oladi?</strong></p>
-    <p>Sinf xonasining tozaligi, partalar va doskaning holati, jihozlarning saqlanishi, chiqindilarning yo'qligi.</p>
+    <p>Sinf xonasining tozaligi, partalar va doskaning holati, chiqindilarning yo'qligi.</p>
     <strong>Kreativ baholash qo'llanmasi:</strong>
     <ul>
-      <li><span class="score-range">9-10 ball:</span> "Billur saroy". Sinf xonasi doim toza, partalar tartibda, chiqindilar yo'q.</li>
-      <li><span class="score-range">6-8 ball:</span> "Yaxshi holat". Kichik kamchiliklar bor, lekin umumiy holat yaxshi.</li>
-      <li><span class="score-range">3-5 ball:</span> "Tartibsizlik". Sinf xonasi tartibsiz, chiqindilar bor.</li>
-      <li><span class="score-range">0-2 ball:</span> "Tozalash kerak". Sinf juda iflos, partalar buzilgan yoki tartibsiz.</li>
+      <li><span class="score-range">9-10 ball:</span> "Billur saroy". Sinf xonasi doim toza.</li>
+      <li><span class="score-range">6-8 ball:</span> "Yaxshi holat". Kichik kamchiliklar bor.</li>
+      <li><span class="score-range">3-5 ball:</span> "Tartibsizlik". Chiqindilar bor.</li>
+      <li><span class="score-range">0-2 ball:</span> "Tozalash kerak". Sinf juda iflos.</li>
     </ul>
   `,
   "Intizom va xulq-atvor": `
     <p><strong>Nimalarni o'z ichiga oladi?</strong></p>
-    <p>O'quvchilarning dars vaqtidagi va tanaffusdagi o'zini tutishi, kattalarga hurmati, sinfdoshlariga munosabati.</p>
+    <p>O'quvchilarning dars va tanaffusdagi o'zini tutishi, kattalarga hurmati.</p>
     <strong>Kreativ baholash qo'llanmasi:</strong>
     <ul>
-      <li><span class="score-range">13-15 ball:</span> "Namuna". Sinfda intizom yaxshi, o'quvchilar bir-biriga va o'qituvchilarga hurmatda, tartibbuzarlik yo'q.</li>
-      <li><span class="score-range">9-12 ball:</span> "Yaxshi". Vaqti-vaqti bilan kichik tartibbuzarliklar bo'ladi (masalan, darsda gaplashish).</li>
-      <li><span class="score-range">5-8 ball:</span> "Ogohlantirish". Tez-tez tartibbuzarlik, o'qituvchiga e'tiborsizlik.</li>
-      <li><span class="score-range">0-4 ball:</span> "Muammoli". Doimiy tartibbuzarlik, janjallar, darsni buzish holatlari.</li>
+      <li><span class="score-range">13-15 ball:</span> "Namuna". Intizom yaxshi, tartibbuzarlik yo'q.</li>
+      <li><span class="score-range">9-12 ball:</span> "Yaxshi". Kichik tartibbuzarliklar bo'ladi.</li>
+      <li><span class="score-range">5-8 ball:</span> "Ogohlantirish". Tez-tez tartibbuzarlik.</li>
+      <li><span class="score-range">0-4 ball:</span> "Muammoli". Doimiy tartibbuzarlik.</li>
     </ul>
   `,
   "Kitobxonlik": `
     <p><strong>Nimalarni o'z ichiga oladi?</strong></p>
-    <p>Kutubxonadan kitob olish, o'qilgan kitoblar bo'yicha suhbatlar, kitob taqdimotlari va mutolaa madaniyati.</p>
+    <p>Kutubxonadan kitob olish, o'qilgan kitoblar bo'yicha suhbatlar.</p>
     <strong>Kreativ baholash qo'llanmasi:</strong>
     <ul>
-      <li><span class="score-range">9-10 ball:</span> "Kitoblar do'sti". Sinf o'quvchilarining ko'pchiligi kutubxonaga a'zo, har oyda kitob o'qib, taqdimot qiladi.</li>
-      <li><span class="score-range">6-8 ball:</span> "Qiziquvchan". O'rtacha darajada kitob o'qishadi, ba'zi o'quvchilar faol.</li>
-      <li><span class="score-range">3-5 ball:</span> "Kam o'qiydi". Juda kam o'quvchilar kitob o'qiydi.</li>
-      <li><span class="score-range">0-2 ball:</span> "Mutolaasiz". Kitobxonlik darajasi nol, kutubxonaga umuman qatnamaydi.</li>
+      <li><span class="score-range">9-10 ball:</span> "Kitoblar do'sti". Ko'pchilik kutubxonaga a'zo.</li>
+      <li><span class="score-range">6-8 ball:</span> "Qiziquvchan". O'rtacha darajada kitob o'qishadi.</li>
+      <li><span class="score-range">3-5 ball:</span> "Kam o'qiydi". Juda kam o'quvchilar o'qiydi.</li>
+      <li><span class="score-range">0-2 ball:</span> "Mutolaasiz". Kutubxonaga qatnamaydi.</li>
     </ul>
   `
 };
@@ -383,14 +464,12 @@ async function init() {
   }
 }
 
-// MEZONLARNI CHIQARISH (Bosiladigan qilish)
 function renderCriteria(criteria) {
   const el = document.getElementById("criteriaList");
   if (!criteria.length) {
     el.innerHTML = '<div class="empty">Mezonlar topilmadi</div>';
     return;
   }
-  
   el.innerHTML = criteria.map(c =>
     `<div class="crit-item" onclick="openCriteriaModal('${c.name}', ${c.max_score})">
       ${c.name} <span>${c.max_score} ball</span>
@@ -398,13 +477,10 @@ function renderCriteria(criteria) {
   ).join("");
 }
 
-// Hakamlarni chiqarish
 function renderJudges(scData, staffList, criteria) {
   const el = document.getElementById("judgesList");
-  const staffMap = {};
-  staffList.forEach(s => { staffMap[s.id] = s.full_name; });
-  const critMap = {};
-  criteria.forEach(c => { critMap[c.id] = c.name; });
+  const staffMap = {}; staffList.forEach(s => { staffMap[s.id] = s.full_name; });
+  const critMap = {}; criteria.forEach(c => { critMap[c.id] = c.name; });
 
   if (!scData.length) {
     el.innerHTML = '<div class="empty">Hakamlar topilmadi</div>';
@@ -414,7 +490,6 @@ function renderJudges(scData, staffList, criteria) {
   el.innerHTML = scData.map(x => {
     const name = staffMap[x.staff_id] || "Noma'lum";
     const crit = critMap[x.criterion_id] || "Mezon yo'q";
-    
     return `
       <div class="judge-item" onclick="openJudgeModal('${name}', '${crit}')">
         <div class="judge-avatar">${name.charAt(0).toUpperCase()}</div>
@@ -428,11 +503,9 @@ function renderJudges(scData, staffList, criteria) {
   }).join("");
 }
 
-// MEZON USTIGA BOSILGANDA MODAL OCHISH
 window.openCriteriaModal = function(critName, maxScore) {
   modalTitle.textContent = critName + " (" + maxScore + " ball)";
   const info = criteriaInfo[critName] || "<p>Bu mezon haqida ma'lumot kiritilmagan.</p>";
-  
   modalBody.innerHTML = `
     <div style="background:#EEF2FF; padding:15px; border-radius:10px; margin-bottom:15px; border:1px solid #C7D2FE;">
       <p style="margin:0; font-weight:700; color:var(--primary);">Ushbu mezon to'liq tushuntirilishi:</p>
@@ -443,11 +516,9 @@ window.openCriteriaModal = function(critName, maxScore) {
   modal.classList.add("active");
 };
 
-// HAKAM USTIGA BOSILGANDA MODAL OCHISH
 window.openJudgeModal = function(name, critName) {
   modalTitle.textContent = name + " - Baholash vazifasi";
   const info = criteriaInfo[critName] || "<p>Bu mezon haqida ma'lumot kiritilmagan.</p>";
-  
   modalBody.innerHTML = `
     <div style="background:#EEF2FF; padding:15px; border-radius:10px; margin-bottom:15px; border:1px solid #C7D2FE;">
       <p style="margin:0; font-weight:700; color:var(--primary);">Ushbu hakam quyidagi mezon bo'yicha baholaydi:</p>
@@ -459,7 +530,6 @@ window.openJudgeModal = function(name, critName) {
   modal.classList.add("active");
 };
 
-// Qolgan reyting chizish qismi (o'zgartirilmagan)
 function renderWeek(weekId) {
   if (!weekId) return;
   const idx = allWeeks.findIndex(w => w.id == weekId);
