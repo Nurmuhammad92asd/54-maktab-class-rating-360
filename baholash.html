@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>54-MAKTAB | Baholash kabineti</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #4F46E5;
+  --primary-hover: #4338CA;
+  --bg: #F3F4F6;
+  --card-bg: #FFFFFF;
+  --text: #111827;
+  --text-muted: #6B7280;
+  --border: #E5E7EB;
+  --success: #10B981;
+  --danger: #EF4444;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.5; }
+
+header {
+  background: linear-gradient(135deg, #1E1B4B, #4F46E5);
+  color: white; text-align: center; padding: 35px 20px;
+  border-bottom-left-radius: 30px; border-bottom-right-radius: 30px;
+  box-shadow: 0 10px 25px rgba(79, 70, 229, 0.2);
+}
+header h2 { font-size: 24px; font-weight: 800; margin-bottom: 5px; }
+header p { font-size: 15px; opacity: 0.9; }
+
+main { max-width: 700px; margin: -20px auto 40px; padding: 0 15px; position: relative; z-index: 10; }
+
+.card {
+  background: var(--card-bg); padding: 25px; border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid var(--border);
+}
+
+h3 { font-size: 20px; margin-bottom: 20px; color: var(--primary); border-bottom: 2px solid #EEF2FF; padding-bottom: 10px; }
+
+.label { font-weight: 700; margin-top: 15px; display: block; font-size: 14px; color: var(--text); }
+.hint { font-size: 13px; color: var(--text-muted); margin: 5px 0 15px; }
+
+input, select, textarea {
+  width: 100%; padding: 14px; margin: 8px 0; border-radius: 10px;
+  border: 1px solid var(--border); font-size: 15px; font-family: inherit;
+  background: #F9FAFB; transition: all 0.2s;
+}
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+
+button {
+  width: 100%; padding: 16px; margin: 15px 0 5px; border-radius: 10px;
+  border: none; background: var(--primary); color: white; font-size: 16px;
+  font-weight: 700; cursor: pointer; transition: background 0.2s, transform 0.1s;
+}
+button:hover { background: var(--primary-hover); }
+button:active { transform: scale(0.98); }
+button:disabled { background: #9CA3AF; cursor: not-allowed; }
+
+.criterion-block {
+  background: #F8FAFC; border: 1px solid var(--border); border-radius: 12px;
+  padding: 15px; margin: 15px 0;
+}
+
+.criterion-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 5px; }
+.criterion-name { font-weight: 700; color: var(--primary); font-size: 16px; }
+.criterion-max { font-size: 13px; color: var(--text-muted); margin-bottom: 10px; font-weight: 600;}
+
+/* Ma'lumot tugmasi */
+.info-btn {
+  background: #EEF2FF; color: var(--primary); border: 1px solid #C7D2FE;
+  padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700;
+  cursor: pointer; width: auto; margin: 0; display: flex; align-items: center; gap: 4px;
+  transition: background 0.2s;
+}
+.info-btn:hover { background: #E0E7FF; }
+
+.existing {
+  background: #FEF3C7; border-left: 4px solid #F59E0B;
+  padding: 10px 12px; border-radius: 6px; font-size: 13px; margin: 10px 0; color: #92400E;
+}
+
+.success { background: #D1FAE5; border-left: 4px solid var(--success); padding: 12px; border-radius: 8px; color: #065F46; font-weight: 700; margin-top: 15px;}
+.error { background: #FEE2E2; border-left: 4px solid var(--danger); padding: 12px; border-radius: 8px; color: #991B1B; font-weight: 700; margin-top: 15px;}
+
+.hidden { display: none !important; }
+.logout-btn { background: #F3F4F6; color: #4B5563; border: 1px solid #D1D5DB; margin-top: 20px;}
+.logout-btn:hover { background: #E5E7EB; }
+
+/* MODAL OYNA (To'liq ma'lumot uchun) */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center;
+  z-index: 1000; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+.modal-content {
+  background: white; border-radius: 20px; max-width: 500px; width: 100%;
+  max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  transform: translateY(20px); transition: transform 0.3s;
+}
+.modal-overlay.active .modal-content { transform: translateY(0); }
+
+.modal-header {
+  padding: 20px; border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+  position: sticky; top: 0; background: white; border-radius: 20px 20px 0 0; z-index: 2;
+}
+.modal-header h3 { margin: 0; font-size: 18px; color: var(--text); }
+.modal-close {
+  background: #F3F4F6; border: none; width: 32px; height: 32px; border-radius: 50%;
+  font-size: 18px; font-weight: bold; color: var(--text-muted); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; margin: 0; padding: 0;
+}
+.modal-close:hover { background: #E5E7EB; color: var(--text); }
+
+.modal-body { padding: 20px; font-size: 14px; color: var(--text); line-height: 1.6; }
+.modal-body p { margin-bottom: 12px; }
+.modal-body strong { color: var(--primary); display: block; margin-top: 15px; margin-bottom: 4px; }
+.modal-body ul { padding-left: 20px; margin-bottom: 15px; }
+.modal-body li { margin-bottom: 8px; }
+.modal-body .score-range { font-weight: 700; color: var(--text); }
+</style>
+</head>
+<body>
+
+<header>
+  <h2>🏆 54-MAKTAB CLASS RATING</h2>
+  <p>Baholash va monitoring kabineti</p>
+</header>
+
+<main>
+  <div class="card hidden" id="dashboard">
+    <h3>Xush kelibsiz, <span id="staffName" style="color:var(--text)">...</span>!</h3>
+
+    <label class="label">1. Sinfni tanlang</label>
+    <select id="classSelect"><option value="">— Yuklanmoqda... —</option></select>
+
+    <label class="label">2. Haftani tanlang</label>
+    <select id="weekSelect"><option value="">— Yuklanmoqda... —</option></select>
+
+    <label class="label" style="margin-top: 25px;">3. Baholash</label>
+    <div class="hint">Har bir mezon uchun 0 dan maksimal ballgacha qiymat kiriting.</div>
+    
+    <div id="criteriaArea">
+      <p class="hint" style="text-align:center; padding: 20px 0;">Sinf va haftani tanlang...</p>
+    </div>
+
+    <button id="saveBtn" disabled>Ma'lumotlarni saqlash</button>
+    <div id="resultMsg"></div>
+
+    <button id="logoutBtn" class="logout-btn">Tizimdan chiqish</button>
+  </div>
+</main>
+
+<!-- MODAL OYNA -->
+<div class="modal-overlay" id="infoModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modalTitle">Mezon haqida</h3>
+      <button class="modal-close" id="modalClose">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody">
+      <!-- Ma'lumot JS orqali to'ldiriladi -->
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabase-config.js"></script>
+<script>
+// ================= MEZONLAR HAQIDA TO'LIQ MA'LUMOT =================
+const criteriaInfo = {
+  "Tashabbuskorlik": `
+    <p>Bu yerda o'quvchining darsda va darsdan tashqari vaqtda o'z fikrini aytishi, savol berishi, yangi g'oyalar taklif qilishi hisobga olinadi.</p>
+    <strong>Baholash me'yorlari:</strong>
+    <ul>
+      <li><span class="score-range">9-10 ball:</span> Darslarda doim faol, mustaqil fikrlaydi, doimiy ravishda yangi g'oyalar va takliflar beradi, guruh ishida yetakchilik qiladi.</li>
+      <li><span class="score-range">6-8 ball:</span> O'rtacha faollik, ba'zan savollar beradi, berilgan topshiriqlarni bajonidil bajaradi, lekin tashabbus ko'proq o'qituvchidan keladi.</li>
+      <li><span class="score-range">3-5 ball:</span> Faqat so'ralganda javob beradi, passiv, tashabbus ko'rsatmaydi.</li>
+      <li><span class="score-range">0-2 ball:</span> Darsda umuman qatnashmaydi, berilgan topshiriqlarga befarq qaraydi.</li>
+    </ul>
+  `,
+  "Maktab tadbirlaridagi faollik": `
+    <p>Maktab miqyosidagi bayramlar, tanlovlar, sport musobaqalari va boshqa tadbirlarda qatnashish hisobga olinadi.</p>
+    <strong>Baholash me'yorlari:</strong>
+    <ul>
+      <li><span class="score-range">9-10 ball:</span> Barcha maktab tadbirlarida faol qatnashadi, tadbirlarni tashkil qilishda yordam beradi, sovrinli o'rinlarni egallaydi.</li>
+      <li><span class="score-range">6-8 ball:</span> Ko'pchilik tadbirlarda qatnashadi, lekin tashkilotchilikda faol emas.</li>
+      <li><span class="score-range">3-5 ball:</span> Ba'zi tadbirlarda qatnashadi (masalan, faqat majburiy tadbirlarda).</li>
+      <li><span class="score-range">0-2 ball:</span> Tadbirlarga umuman qatnashmaydi.</li>
+    </ul>
+  `,
+  "Oquv natijalari": `
+    <p>Bu yerda sinfning choraklik baholari, nazorat ishlari natijalari hisobga olinadi.</p>
+    <strong>Baholash me'yorlari:</strong>
+    <ul>
+      <li><span class="score-range">22-25 ball:</span> Sinfda o'zlashtirish darajasi eng yuqori (masalan, 90-100%), barcha o'quvchilar bahosi yaxshi.</li>
+      <li><span class="score-range">16-21 ball:</span> Yaxshi o'zlashtirish, faqat bir nechta o'quvchilarda past baholar bor.</li>
+      <li><span class="score-range">8-15 ball:</span> O'rtacha o'zlashtirish, past baholovchilar soni ko'p.</li>
+      <li><span class="score-range">0-7 ball:</span> O'zlashtirish juda past, ko'pchilik o'quvchilar dars qoldiradi yoki yaxshi baho olmaydi.</li>
+    </ul>
+  `,
+  "Davomat": `
+    <p>Darslarga qatnashish, sababsiz dars qoldirmaslik (Navbatchi o'qituvchi tomonidan).</p>
+    <strong>Baholash me'yorlari:</strong>
+    <ul>
+      <li><span class="score-range">18-20 ball:</span> Hafta davomida bitta ham sababsiz dars qoldirilmagan, kechikishlar yo'q.</li>
+      <li><span class="score-range">13-17 ball:</span> 1-2 ta sababsiz dars qoldirilgan yoki kichik kechikishlar bor.</li>
+      <li><span class="score-range">7-12 ball:</span> 3-5 ta sababsiz dars qoldirilgan.</li>
+      <li><span class="score-range">0-6 ball:</span> Ko'plab dars qoldirishlar, davomat juda past.</li>
+    </ul>
+  `,
+  "Tozalik va tartib": `
+    <p>Sinf xonasining tozaligi, partalar va jihozlarning holati (Osiyo tomonidan).</p>
+    <strong>Baholash me'yorlari:</strong>
+    <ul>
+      <li><span class="score-range">9-10 ball:</span> Sinf xonasi doim toza, partalar tartibda, chiqindilar yo'q.</li>
+      <li><span class="score-range">6-8 ball:</span> Kichik kamchiliklar bor, lekin umumiy holat yaxshi.</li>
+      <li><span class="score-range">3-5 ball:</span> Sinf xonasi tartibsiz, chiqindilar bor.</li>
+      <li><span class="score-range">0-2 ball:</span> Sinf juda iflos, partalar buzilgan yoki tartibsiz.</li>
+    </ul>
+  `,
+  "Intizom va xulq-atvor": `
+    <p>O'quvchilarning dars vaqtidagi va tanaffusdagi o'zini tutishi (Ş. Jörayev tomonidan).</p>
+    <strong>Baholash me'yorlari:</strong>
+    <ul>
+      <li><span class="score-range">13-15 ball:</span> Sinfda intizom yaxshi, o'quvchilar bir-biriga va o'qituvchilarga hurmatda, tartibbuzarlik yo'q.</li>
+      <li><span class="score-range">9-12 ball:</span> Vaqti-vaqti bilan kichik tartibbuzarliklar bo'ladi (masalan, darsda gaplashish).</li>
+      <li><span class="score-range">5-8 ball:</span> Tez-tez tartibbuzarlik, o'qituvchiga e'tiborsizlik.</li>
+      <li><span class="score-range">0-4 ball:</span> Doimiy tartibbuzarlik, janjallar, darsni buzish holatlari.</li>
+    </ul>
+  `,
+  "Kitobxonlik": `
+    <p>Kutubxonadan kitob olish, o'qilgan kitoblar bo'yicha suhbatlar (Valiyeva Sevara tomonidan).</p>
+    <strong>Baholash me'yorlari:</strong>
+    <ul>
+      <li><span class="score-range">9-10 ball:</span> Sinf o'quvchilarining ko'pchiligi kutubxonaga a'zo, har oyda kitob o'qib, taqdimot qiladi.</li>
+      <li><span class="score-range">6-8 ball:</span> O'rtacha darajada kitob o'qishadi.</li>
+      <li><span class="score-range">3-5 ball:</span> Juda kam o'quvchilar kitob o'qiydi.</li>
+      <li><span class="score-range">0-2 ball:</span> Kitobxonlik darajasi nol, kutubxonaga umuman qatnamaydi.</li>
+    </ul>
+  `
+};
+
+// ================= O'ZGARUVCHILAR =================
+const dashboard  = document.getElementById("dashboard");
+const classSelect= document.getElementById("classSelect");
+const weekSelect = document.getElementById("weekSelect");
+const criteriaArea = document.getElementById("criteriaArea");
+const saveBtn    = document.getElementById("saveBtn");
+const resultMsg  = document.getElementById("resultMsg");
+
+// Modal elementlari
+const modal = document.getElementById("infoModal");
+const modalTitle = document.getElementById("modalTitle");
+const modalBody = document.getElementById("modalBody");
+const modalClose = document.getElementById("modalClose");
+
+let currentStaffId = null;
+let myCriteria = [];
+let myScores = {};
+
+// Modalni yopish
+modalClose.onclick = () => modal.classList.remove("active");
+modal.onclick = (e) => { if (e.target === modal) modal.classList.remove("active"); };
+
+// Ma'lumot tugmasi bosilganda
+function showCriteriaInfo(name) {
+  const info = criteriaInfo[name] || "<p>Bu mezon haqida ma'lumot kiritilmagan.</p>";
+  modalTitle.textContent = name;
+  modalBody.innerHTML = info;
+  modal.classList.add("active");
+}
+
+// ============ SESSION TEKSHIRISH ============
+async function checkSession() {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (!session) {
+    window.location.href = "login.html"; 
+    return;
+  }
+  await initDashboard(session.user);
+}
+
+// ============ DASHBOARD YUKLASH ============
+async function initDashboard(user) {
+  const { data: staff, error: staffErr } = await supabaseClient
+    .from("staff").select("full_name").eq("id", user.id).maybeSingle();
+
+  if (staffErr || !staff) {
+    alert("Xodim ma'lumotlari topilmadi. Qaytadan kiring.");
+    await supabaseClient.auth.signOut();
+    window.location.href = "login.html";
+    return;
+  }
+
+  currentStaffId = user.id;
+  document.getElementById("staffName").textContent = staff.full_name;
+  dashboard.classList.remove("hidden");
+
+  const { data: sc, error: scErr } = await supabaseClient
+    .from("staff_criteria")
+    .select("criterion_id, criteria(id, name, max_score)")
+    .eq("staff_id", user.id);
+
+  if (scErr) {
+    criteriaArea.innerHTML = `<div class="error">Mezonlarni yuklashda xato: ${scErr.message}</div>`;
+    return;
+  }
+  myCriteria = (sc || []).map(x => x.criteria).filter(Boolean);
+
+  if (myCriteria.length === 0) {
+    criteriaArea.innerHTML = `<div class="error">Sizga hali baholash mezoni biriktirilmagan. Admin bilan bog'laning.</div>`;
+    saveBtn.disabled = true;
+    return;
+  }
+
+  const { data: classes } = await supabaseClient
+    .from("classes").select("id, name").order("name");
+
+  classSelect.innerHTML = '<option value="">— Sinfni tanlang —</option>' +
+    (classes || []).map(c => `<option value="${c.id}">${c.name}</option>`).join("");
+
+  // Faqat ochiq haftalarni olish (status = 'open')
+  const { data: weeks } = await supabaseClient
+    .from("weeks").select("id, title, start_date, end_date")
+    .eq("status", "open").order("start_date");
+
+  weekSelect.innerHTML = '<option value="">— Haftani tanlang —</option>' +
+    (weeks || []).map(w => `<option value="${w.id}">${w.title} (${w.start_date} — ${w.end_date})</option>`).join("");
+
+  classSelect.onchange = loadEvaluationForm;
+  weekSelect.onchange  = loadEvaluationForm;
+  saveBtn.onclick = saveEvaluations;
+}
+
+// ============ FORMANI YUKLASH ============
+async function loadEvaluationForm() {
+  resultMsg.innerHTML = "";
+  const classId = classSelect.value;
+  const weekId  = weekSelect.value;
+
+  if (!classId || !weekId) {
+    criteriaArea.innerHTML = `<p class="hint" style="text-align:center; padding:20px;">Sinf va haftani tanlang...</p>`;
+    saveBtn.disabled = true;
+    return;
+  }
+
+  criteriaArea.innerHTML = `<p class="hint" style="text-align:center; padding:20px;">Yuklanmoqda...</p>`;
+
+  const { data: existing, error: eErr } = await supabaseClient
+    .from("evaluations")
+    .select("criterion_id, score, comment")
+    .eq("staff_id", currentStaffId)
+    .eq("class_id", classId)
+    .eq("week_id", weekId);
+
+  if (eErr) {
+    criteriaArea.innerHTML = `<div class="error">Xato: ${eErr.message}</div>`;
+    saveBtn.disabled = true;
+    return;
+  }
+
+  myScores = {};
+  (existing || []).forEach(e => {
+    myScores[e.criterion_id] = { score: e.score, comment: e.comment || "" };
+  });
+
+  // Formani chizish (Ma'lumot tugmasi bilan)
+  criteriaArea.innerHTML = myCriteria.map(c => {
+    const ex = myScores[c.id];
+    const val = ex ? ex.score : "";
+    const cmt = ex ? ex.comment : "";
+    
+    // Tugma faqat ma'lumoti bor mezonlar uchun chiqadi
+    const hasInfo = criteriaInfo[c.name] !== undefined;
+    const infoBtn = hasInfo 
+      ? `<button class="info-btn" onclick="showCriteriaInfo('${c.name}')">ℹ️ To'liq ma'lumot</button>` 
+      : '';
+
+    return `
+      <div class="criterion-block">
+        <div class="criterion-header">
+          <div class="criterion-name">${c.name}</div>
+          ${infoBtn}
+        </div>
+        <div class="criterion-max">Maksimal: ${c.max_score} ball</div>
+        ${ex ? `<div class="existing">Oldin kiritilgan: <b>${ex.score}</b> ball${ex.comment ? ' (Izoh: '+ex.comment+')' : ''}</div>` : ""}
+        <input type="number" min="0" max="${c.max_score}" step="0.5"
+               id="score_${c.id}" value="${val}" placeholder="0 dan ${c.max_score} gacha">
+        <input type="text" id="comment_${c.id}" value="${cmt.replace(/"/g,'&quot;')}" placeholder="Izoh yozish (ixtiyoriy)">
+      </div>
+    `;
+  }).join("");
+
+  saveBtn.disabled = false;
+}
+
+// ============ SAQLASH ============
+async function saveEvaluations() {
+  const classId = classSelect.value;
+  const weekId  = weekSelect.value;
+  if (!classId || !weekId) return;
+
+  resultMsg.innerHTML = "";
+  const rows = [];
+
+  for (const c of myCriteria) {
+    const input = document.getElementById("score_" + c.id);
+    const comment = document.getElementById("comment_" + c.id);
+    const raw = input.value.trim();
+
+    if (raw === "") continue; 
+
+    const val = parseFloat(raw);
+    if (isNaN(val) || val < 0 || val > c.max_score) {
+      resultMsg.innerHTML = `<div class="error">"${c.name}" uchun noto'g'ri ball kiritildi. 0 va ${c.max_score} orasida bo'lishi kerak.</div>`;
+      return;
+    }
+    
+    rows.push({
+      class_id:     parseInt(classId),
+      week_id:      parseInt(weekId),
+      criterion_id: c.id,
+      staff_id:     currentStaffId,
+      score:        val,
+      comment:      comment.value.trim() || null
+    });
+  }
+
+  if (rows.length === 0) {
+    resultMsg.innerHTML = `<div class="error">Saqlash uchun hech qanday ball kiritilmadi.</div>`;
+    return;
+  }
+
+  saveBtn.disabled = true;
+  saveBtn.textContent = "Saqlanmoqda...";
+
+  const { error } = await supabaseClient
+    .from("evaluations")
+    .upsert(rows, { onConflict: "class_id,week_id,criterion_id,staff_id" });
+
+  saveBtn.disabled = false;
+  saveBtn.textContent = "Ma'lumotlarni saqlash";
+
+  if (error) {
+    resultMsg.innerHTML = `<div class="error">Xatolik yuz berdi: ${error.message}</div>`;
+    return;
+  }
+
+  resultMsg.innerHTML = `<div class="success">✅ Muvaffaqiyatli saqlandi!</div>`;
+  setTimeout(loadEvaluationForm, 1000);
+}
+
+// ============ CHIQISH ============
+document.getElementById("logoutBtn").onclick = async () => {
+  await supabaseClient.auth.signOut();
+  window.location.href = "index.html";
+};
+
+checkSession();
+</script>
+</body>
+</html>
