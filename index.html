@@ -4,19 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>54-MAKTAB | Class Rating 360</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* OCHIQ VA ZAMONAVIY DIZAYN */
 :root {
-  --primary: #2563EB;      /* Moviy */
+  --primary: #2563EB;
   --primary-light: #EFF6FF;
-  --accent: #F59E0B;       /* Oltin */
-  --bg: #F8FAFC;           /* Ochiq kulrang fon */
+  --bg: #F8FAFC;
   --card-bg: #FFFFFF;
   --text: #1E293B;
   --text-muted: #64748B;
-  --success: #10B981;      /* Yashil (o'sish) */
-  --danger: #EF4444;       /* Qizil (pasayish) */
+  --gold: #F59E0B;
+  --silver: #94A3B8;
+  --bronze: #B45309;
   --border: #E2E8F0;
 }
 
@@ -29,72 +28,145 @@ body {
   line-height: 1.5;
 }
 
-/* Header */
 header {
   background: linear-gradient(135deg, var(--primary), #1D4ED8);
   color: white;
   text-align: center;
-  padding: 40px 20px;
+  padding: 40px 20px 50px;
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
   box-shadow: 0 10px 20px rgba(37, 99, 235, 0.15);
 }
 
-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; letter-spacing: 1px;}
-header p { font-size: 15px; opacity: 0.9; }
+header h1 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+header p { font-size: 15px; opacity: 0.9; margin-bottom: 20px;}
 
-/* Asosiy konteyner */
+.login-btn {
+  display: inline-block;
+  background: white;
+  color: var(--primary);
+  padding: 12px 30px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+.login-btn:hover { transform: translateY(-2px); }
+
 main {
-  max-width: 900px;
+  max-width: 1000px;
   margin: -20px auto 40px;
   padding: 0 15px;
   position: relative;
   z-index: 10;
 }
 
-/* Statistika kartalari */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-  margin-bottom: 25px;
-}
-
-.stat-card {
+/* Haftani tanlash paneli */
+.week-panel {
   background: var(--card-bg);
   padding: 20px;
   border-radius: 16px;
-  text-align: center;
   box-shadow: 0 4px 15px rgba(0,0,0,0.05);
   border: 1px solid var(--border);
-}
-
-.stat-card h3 { font-size: 22px; color: var(--primary); font-weight: 700; margin-bottom: 4px;}
-.stat-card p { font-size: 13px; color: var(--text-muted); font-weight: 500;}
-
-/* Reyting bo'limlari */
-.rating-section {
-  background: var(--card-bg);
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 25px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-  border: 1px solid var(--border);
-}
-
-.rating-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding-bottom: 15px;
-  border-bottom: 2px solid var(--border);
+  justify-content: center;
+  gap: 15px;
 }
 
-/* Sinf qatori (Dinamika bilan) */
+.week-panel label { font-weight: 600; color: var(--text-muted); }
+.week-panel select {
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-size: 16px;
+  font-family: inherit;
+  font-weight: 600;
+  color: var(--primary);
+  cursor: pointer;
+}
+
+/* Shohsupa (Podium) dizayni */
+.podium-section {
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 30px 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+  border: 1px solid var(--border);
+  text-align: center;
+}
+
+.section-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 40px;
+  display: inline-block;
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--primary);
+}
+
+.podium-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 30px;
+  height: 220px;
+}
+
+.podium-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
+  max-width: 160px;
+}
+
+.podium-name {
+  font-weight: 800;
+  font-size: 18px;
+  margin-bottom: 5px;
+  color: var(--text);
+}
+
+.podium-score {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.podium-block {
+  width: 100%;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 15px;
+  color: white;
+  font-size: 28px;
+  font-weight: 800;
+  box-shadow: inset 0 4px 0 rgba(255,255,255,0.2);
+}
+
+.podium-1 .podium-block { height: 160px; background: linear-gradient(180deg, #FCD34D, #F59E0B); }
+.podium-2 .podium-block { height: 120px; background: linear-gradient(180deg, #CBD5E1, #94A3B8); }
+.podium-3 .podium-block { height: 90px; background: linear-gradient(180deg, #D97706, #B45309); }
+
+/* Qolgan sinflar ro'yxati */
+.list-section {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  border: 1px solid var(--border);
+}
+
 .class-row {
   display: flex;
   align-items: center;
@@ -103,60 +175,20 @@ main {
   margin-bottom: 10px;
   background: #fff;
   border: 1px solid var(--border);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s;
 }
+.class-row:hover { transform: translateX(5px); }
 
-.class-row:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.05);
-}
+.rank { font-size: 18px; font-weight: 700; color: var(--text-muted); width: 40px; }
+.class-name { flex-grow: 1; font-size: 17px; font-weight: 600; }
+.score { font-size: 18px; font-weight: 800; color: var(--primary); }
 
-/* TOP 1,2,3 */
-.class-row.top-1 { border-left: 5px solid #F59E0B; background: #FFFBEB; }
-.class-row.top-2 { border-left: 5px solid #94A3B8; background: #F8FAFC; }
-.class-row.top-3 { border-left: 5px solid #B45309; background: #FEF3C7; }
-
-/* O'rin */
-.rank { font-size: 18px; font-weight: 700; color: var(--text-muted); width: 35px; }
-.top-1 .rank { color: #D97706; font-size: 22px; }
-.top-2 .rank { color: #64748B; font-size: 22px; }
-.top-3 .rank { color: #B45309; font-size: 22px; }
-
-/* Sinf nomi */
-.class-name { flex-grow: 1; font-size: 17px; font-weight: 600; color: var(--text); }
-
-/* DINAMIKA (Haftalik o'zgarish) */
-.dynamics {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  margin-right: 20px;
-  min-width: 80px;
-}
-
-.current-score { font-size: 18px; font-weight: 700; color: var(--primary); }
-
-.diff-badge {
-  font-size: 12px;
-  font-weight: 600;
-  padding: 3px 8px;
-  border-radius: 6px;
-  margin-top: 4px;
-  display: inline-block;
-}
-
-.diff-up { color: var(--success); background: #ECFDF5; }
-.diff-down { color: var(--danger); background: #FEF2F2; }
-.diff-same { color: var(--text-muted); background: #F1F5F9; }
-
-/* Mobil moslashuv */
 @media (max-width: 600px) {
   header h1 { font-size: 22px; }
-  .stats-grid { grid-template-columns: 1fr; }
-  .class-row { padding: 12px; }
-  .class-name { font-size: 15px; }
-  .current-score { font-size: 16px; }
-  .dynamics { margin-right: 10px; min-width: 70px; }
+  .podium-name { font-size: 15px; }
+  .podium-score { font-size: 12px; }
+  .podium-block { font-size: 22px; }
+  .week-panel { flex-direction: column; gap: 10px; }
 }
 </style>
 </head>
@@ -164,40 +196,35 @@ main {
 
 <header>
   <h1>🏆 54-MAKTAB CLASS RATING 360</h1>
-  <p>Haftalik dinamika va sinflar reytingi</p>
+  <p>Har haftalik g'oliblar shohsupasi</p>
+  <a href="login.html" class="login-btn">🔐 Tizimga kirish</a>
 </header>
 
 <main>
-  <!-- Statistika -->
-  <div class="stats-grid">
-    <div class="stat-card">
-      <h3>7 ta</h3>
-      <p>Baholash mezonlari</p>
-    </div>
-    <div class="stat-card">
-      <h3>100 ball</h3>
-      <p>Maksimal natija</p>
-    </div>
+  <!-- Haftani tanlash -->
+  <div class="week-panel">
+    <label>📅 Haftani tanlang:</label>
+    <select id="weekSelect">
+      <option value="">Yuklanmoqda...</option>
+    </select>
   </div>
 
-  <!-- Reyting: Boshlang'ich sinflar -->
-  <div class="rating-section">
-    <div class="rating-title">
-      <span>🥇</span> Boshlang'ich sinflar reytingi
+  <!-- BOSHLANG'ICH SINFALAR SHOHSUPASI -->
+  <div class="podium-section">
+    <div class="section-title">🥇 Boshlang'ich sinflar g'oliblari</div>
+    <div id="primaryPodium" class="podium-container">
+      <!-- JS orqali to'ldiriladi -->
     </div>
-    <div id="primary-list">
-      <div style="text-align: center; color: var(--text-muted); padding: 20px;">Ma'lumotlar yuklanmoqda...</div>
-    </div>
+    <div id="primaryList" style="margin-top: 30px; text-align: left;"></div>
   </div>
 
-  <!-- Reyting: Yuqori sinflar -->
-  <div class="rating-section">
-    <div class="rating-title">
-      <span>🏆</span> Yuqori sinflar reytingi
+  <!-- YUQORI SINFALAR SHOHSUPASI -->
+  <div class="podium-section">
+    <div class="section-title">🏆 Yuqori sinflar g'oliblari</div>
+    <div id="upperPodium" class="podium-container">
+      <!-- JS orqali to'ldiriladi -->
     </div>
-    <div id="upper-list">
-      <div style="text-align: center; color: var(--text-muted); padding: 20px;">Ma'lumotlar yuklanmoqda...</div>
-    </div>
+    <div id="upperList" style="margin-top: 30px; text-align: left;"></div>
   </div>
 </main>
 
@@ -205,85 +232,101 @@ main {
 <script src="./supabase-config.js"></script>
 
 <script>
-async function loadRatings() {
-  try {
-    // 1. Barcha sinflarni olamiz
-    const { data: classes } = await supabaseClient.from("classes").select("*");
-    
-    // 2. Haftalarni sanasi bo'yicha olamiz
-    const { data: weeks } = await supabaseClient.from("weeks").select("*").order("start_date", { ascending: false });
-    
-    // 3. Barcha baholarni olamiz
-    const { data: evals } = await supabaseClient.from("evaluations").select("*");
+let allClasses = [];
+let allWeeks = [];
+let allEvals = [];
 
-    if (!classes || !weeks || !evals) return;
+// 1. Dastlabki ma'lumotlarni yuklash
+async function initData() {
+  const [clsRes, wkRes, evRes] = await Promise.all([
+    supabaseClient.from("classes").select("*"),
+    supabaseClient.from("weeks").select("*").order("start_date", { ascending: false }),
+    supabaseClient.from("evaluations").select("*")
+  ]);
 
-    // Joriy hafta (eng oxirgi boshlangan) va O'tgan haftani aniqlaymiz
-    const currentWeekId = weeks.length > 0 ? weeks[0].id : null;
-    const prevWeekId = weeks.length > 1 ? weeks[1].id : null;
+  allClasses = clsRes.data || [];
+  allWeeks = wkRes.data || [];
+  allEvals = evRes.data || [];
 
-    // Har bir sinf uchun jami ballarni hisoblaymiz
-    let classStats = {};
-    classes.forEach(c => classStats[c.id] = { info: c, currentTotal: 0, prevTotal: 0 });
+  const weekSelect = document.getElementById("weekSelect");
+  weekSelect.innerHTML = allWeeks.map((w, i) => 
+    `<option value="${w.id}" ${i === 0 ? 'selected' : ''}>${w.title} (${w.start_date} - ${w.end_date})</option>`
+  ).join("");
 
-    evals.forEach(e => {
-      if (!classStats[e.class_id]) return;
-      if (e.week_id === currentWeekId) classStats[e.class_id].currentTotal += Number(e.score);
-      if (e.week_id === prevWeekId) classStats[e.class_id].prevTotal += Number(e.score);
-    });
+  weekSelect.addEventListener("change", () => renderWeek(weekSelect.value));
 
-    // Reytingni joriy hafta ballari bo'yicha saralaymiz
-    let sortedClasses = Object.values(classStats).sort((a, b) => b.currentTotal - a.currentTotal);
-
-    // HTML yaratish funksiyasi
-    const renderList = (arr, level) => {
-      let filtered = arr.filter(item => item.info.level === level);
-      if (filtered.length === 0) return `<div style="text-align:center;color:#94A3B8;padding:20px;">Hozircha natija yo'q</div>`;
-
-      return filtered.map((item, index) => {
-        let rankClass = index === 0 ? 'top-1' : index === 1 ? 'top-2' : index === 2 ? 'top-3' : '';
-        let medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : (index + 1);
-        
-        // Haftalik farqni hisoblash
-        let diff = item.currentTotal - item.prevTotal;
-        let diffHtml = '';
-        
-        if (item.prevTotal > 0) { // Agar o'tgan hafta ma'lumoti bo'lsa
-          if (diff > 0) {
-            diffHtml = `<div class="diff-badge diff-up">▲ +${diff} o'sish</div>`;
-          } else if (diff < 0) {
-            diffHtml = `<div class="diff-badge diff-down">▼ ${diff} pasayish</div>`;
-          } else {
-            diffHtml = `<div class="diff-badge diff-same">— 0 o'zgarish</div>`;
-          }
-        } else if (item.currentTotal > 0) {
-           diffHtml = `<div class="diff-badge diff-same">Yangi</div>`;
-        } else {
-           diffHtml = `<div class="diff-badge diff-same">—</div>`;
-        }
-
-        return `
-          <div class="class-row ${rankClass}">
-            <div class="rank">${medal}</div>
-            <div class="class-name">${item.info.name}</div>
-            <div class="dynamics">
-              <div class="current-score">${item.currentTotal} ball</div>
-              ${diffHtml}
-            </div>
-          </div>
-        `;
-      }).join('');
-    };
-
-    document.getElementById("primary-list").innerHTML = renderList(sortedClasses, "primary");
-    document.getElementById("upper-list").innerHTML = renderList(sortedClasses, "upper");
-
-  } catch (err) {
-    console.error(err);
+  if (allWeeks.length > 0) {
+    renderWeek(allWeeks[0].id); // Eng so'nggi haftani ko'rsatish
   }
 }
 
-loadRatings();
+// 2. Tanlangan hafta bo'yicha hisoblash va chizish
+function renderWeek(selectedWeekId) {
+  const selectedWeekIndex = allWeeks.findIndex(w => w.id == selectedWeekId);
+  const prevWeekId = selectedWeekIndex < allWeeks.length - 1 ? allWeeks[selectedWeekIndex + 1].id : null;
+
+  let classStats = {};
+  allClasses.forEach(c => classStats[c.id] = { info: c, current: 0, prev: 0 });
+
+  allEvals.forEach(e => {
+    if (!classStats[e.class_id]) return;
+    if (e.week_id == selectedWeekId) classStats[e.class_id].current += Number(e.score);
+    if (e.week_id == prevWeekId) classStats[e.class_id].prev += Number(e.score);
+  });
+
+  let sorted = Object.values(classStats).sort((a, b) => b.current - a.current);
+
+  drawPodium(sorted, "primary", "primaryPodium", "primaryList");
+  drawPodium(sorted, "upper", "upperPodium", "upperList");
+}
+
+// 3. Shohsupa va ro'yxatni yaratish funksiyasi
+function drawPodium(sortedData, level, podiumId, listId) {
+  let filtered = sortedData.filter(item => item.info.level === level);
+  const podiumDiv = document.getElementById(podiumId);
+  const listDiv = document.getElementById(listId);
+
+  if (filtered.length === 0 || filtered[0].current === 0) {
+    podiumDiv.innerHTML = `<p style="color:#94A3B8; width:100%;">Bu hafta uchun natijalar hali yo'q</p>`;
+    listDiv.innerHTML = "";
+    return;
+  }
+
+  // Eng yaxshi 3 talik (faqat 0 dan katta bo'lsa)
+  let top3 = filtered.filter(f => f.current > 0).slice(0, 3);
+  // Qolganlar
+  let rest = filtered.slice(top3.length);
+
+  // Shohsupani chizish (2-o'rin, 1-o'rin, 3-o'rin tartibida)
+  let p1 = top3[0] ? `<div class="podium-item podium-1"><div class="podium-name">${top3[0].info.name}</div><div class="podium-score">${top3[0].current} ball</div><div class="podium-block">🥇</div></div>` : '';
+  let p2 = top3[1] ? `<div class="podium-item podium-2"><div class="podium-name">${top3[1].info.name}</div><div class="podium-score">${top3[1].current} ball</div><div class="podium-block">🥈</div></div>` : '';
+  let p3 = top3[2] ? `<div class="podium-item podium-3"><div class="podium-name">${top3[2].info.name}</div><div class="podium-score">${top3[2].current} ball</div><div class="podium-block">🥉</div></div>` : '';
+
+  podiumDiv.innerHTML = p2 + p1 + p3;
+
+  // Qolganlar ro'yxati (4-o'rindan boshlab)
+  listDiv.innerHTML = rest.map((item, index) => {
+    let rank = index + top3.length + 1;
+    let diff = item.current - item.prev;
+    let diffHtml = '';
+    
+    if (item.prev > 0) {
+      if (diff > 0) diffHtml = `<span style="color:#10B981;font-size:12px;font-weight:bold;margin-left:10px;">▲ +${diff}</span>`;
+      else if (diff < 0) diffHtml = `<span style="color:#EF4444;font-size:12px;font-weight:bold;margin-left:10px;">▼ ${diff}</span>`;
+      else diffHtml = `<span style="color:#64748B;font-size:12px;font-weight:bold;margin-left:10px;">—</span>`;
+    }
+
+    return `
+      <div class="class-row">
+        <div class="rank">${rank}</div>
+        <div class="class-name">${item.info.name} ${diffHtml}</div>
+        <div class="score">${item.current} ball</div>
+      </div>
+    `;
+  }).join('');
+}
+
+initData();
 </script>
 </body>
 </html>
