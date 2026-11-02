@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -12,9 +13,7 @@ main{max-width:650px;margin:30px auto;padding:15px}
 .card{background:white;padding:22px;border-radius:15px;margin-bottom:18px;box-shadow:0 3px 14px #0001}
 input,button{width:100%;padding:13px;margin:8px 0;border-radius:8px;border:1px solid #ccd4e2;font-size:16px}
 button{background:#173e70;color:white;border:0;font-weight:bold}
-button:disabled{opacity:.6}
 .hidden{display:none}
-small{color:#64748b}
 </style>
 </head>
 <body>
@@ -22,27 +21,22 @@ small{color:#64748b}
 <h2>🏆 54-MAKTAB CLASS RATING 360</h2>
 <p>ADMIN BOSHQARUV PANELI</p>
 </header>
-
 <main>
 <div class="card" id="loginBox">
 <h3>Admin tizimiga kirish</h3>
-<input id="email" type="email" placeholder="Supabase hisobingiz emaili">
-<input id="password" type="password" placeholder="Supabase parolingiz">
+<input id="email" type="email" placeholder="Email">
+<input id="password" type="password" placeholder="Parol">
 <button id="loginBtn">Kirish</button>
 <p id="message"></p>
-<small>Login sifatida Supabase’da ro‘yxatdan o‘tgan emailingiz ishlatiladi.</small>
 </div>
-
 <div class="card hidden" id="dashboard">
 <h3>Admin paneliga xuş kelibsiz!</h3>
-<p>54-maktab boshqaruv tizimi</p>
 <p id="userInfo"></p>
 <button id="checkBtn">Mezonlarni tekshirish</button>
 <div id="criteria"></div>
 <button id="logoutBtn">Tizimdan chiqish</button>
 </div>
 </main>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./supabase-config.js"></script>
 <script>
@@ -52,21 +46,31 @@ const message=document.getElementById("message");
 
 async function showSession(){
  const {data:{session}}=await supabaseClient.auth.getSession();
- if(session){
-  loginBox.classList.add("hidden");
-  dashboard.classList.remove("hidden");
-  document.getElementById("userInfo").textContent="Hisob: "+session.user.email;
+ if(session) await verifyAdmin(session.user);
+}
+async function verifyAdmin(user){
+ const {data,error}=await supabaseClient
+ .from("staff").select("role")
+ .eq("id",user.id).maybeSingle();
+
+ if(error || data?.role!=="admin"){
+  await supabaseClient.auth.signOut();
+  loginBox.classList.remove("hidden");
+  dashboard.classList.add("hidden");
+  message.textContent="Bu sahifaga faqat admin kira oladi.";
+  return;
  }
+ loginBox.classList.add("hidden");
+ dashboard.classList.remove("hidden");
+ document.getElementById("userInfo").textContent="Admin: "+user.email;
 }
 document.getElementById("loginBtn").onclick=async()=>{
  message.textContent="Tekshirilmoqda...";
  const email=document.getElementById("email").value.trim();
  const password=document.getElementById("password").value;
  const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
- if(error){message.textContent="Xatolik: "+error.message;return;}
- loginBox.classList.add("hidden");
- dashboard.classList.remove("hidden");
- document.getElementById("userInfo").textContent="Hisob: "+data.user.email;
+ if(error){message.textContent="Login yoki parol xato.";return;}
+ await verifyAdmin(data.user);
 };
 document.getElementById("checkBtn").onclick=async()=>{
  const area=document.getElementById("criteria");
